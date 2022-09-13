@@ -17,12 +17,12 @@ jobs:
         python-version: 3.8
     - name: Install dependencies
       working-directory: ./services/execution-service
-      env:
-        TOKEN: ${{ secrets.IBMQ_TOKEN }}
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt;
     - name: Test with unittest and coverage-report
+      env:
+        TOKEN: ${{ secrets.IBMQ_TOKEN }}
       working-directory: ./services/execution-service
       run: |
         python -m unittest discover
