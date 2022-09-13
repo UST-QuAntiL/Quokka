@@ -1,4 +1,6 @@
 # Optimization Service
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 
 The circuit enables the use of optimization libraries such as [Scipy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html) or [Qiskit](https://github.com/Qiskit/qiskit-terra/tree/main/qiskit/algorithms/optimizers).
 
