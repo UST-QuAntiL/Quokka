@@ -5,10 +5,10 @@ COPY . /
 RUN apt-get update && apt-get install -y gcc python3-dev
 RUN pip install -r requirements.txt
 
-EXPOSE 5000
+EXPOSE 5074
 
 ENV FLASK_APP=optimization-service.py
 ENV FLASK_ENV=development
 ENV FLASK_DEBUG=0
 
-CMD python -m flask run --host=0.0.0.0
+CMD python -m flask run --host=0.0.0.0 --port=5074
