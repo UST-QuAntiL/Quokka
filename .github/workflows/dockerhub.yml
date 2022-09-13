@@ -1,0 +1,69 @@
+name: Push docker images to Dockerhub
+
+on:
+  push:
+    branches: master
+    tags:
+      - "v*.*.*"
+
+
+jobs:
+  multi:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set reference as output
+        id: vars
+        run: echo ::set-output name=tag::$(echo ${GITHUB_REF#refs/*/} | sed -e 's?/?-?g')
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      -
+        name: Build and push Execution Service latest
+        if: ${{ steps.vars.outputs.tag }} == 'master'
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./services/execution-service/Dockerfile
+          push: true
+          tags: planqk/execution-service:latest
+      -
+        name: Build and push Execution Service version
+        if: ${{ steps.vars.outputs.tag }} != 'master'
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./services/execution-service/Dockerfile
+          push: true
+          tags: planqk/execution-service:${{ steps.vars.outputs.tag }}
+      -
+        name: Build and push Optimization Service latest
+        if: ${{ steps.vars.outputs.tag == 'master' }}
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./services/optimization-service/Dockerfile
+          push: true
+          tags: planqk/optimization-service:latest
+      -
+        name: Build and push Optimization Service version
+        if: ${{ steps.vars.outputs.tag != 'master' }}
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./services/optimization-service/Dockerfile
+          push: true
+          tags: planqk/optimization-service:${{ steps.vars.outputs.tag }}
+
