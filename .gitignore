@@ -1,0 +1,20 @@
+#pycache folder
+__pycache__/
+*.pyc
+
+#temp + coverage folder & files
+/tmp/*
+/coverage.xml
+/htmlcov/*
+/.coverage
+
+#python env
+/venv/*
+/pychvenv/*
+
+
+#Intellij
+.idea/
+
+#Graphics
+*.png

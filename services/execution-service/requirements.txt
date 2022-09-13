@@ -1,0 +1,7 @@
+Flask==2.1.2
+Flask-RESTful==0.3.9
+qiskit==0.37.1
+requests==2.28.0
+urllib3==1.26.9
+Werkzeug==2.1.2
+flask-smorest==0.39.0
