@@ -22,7 +22,7 @@ x-minio-common: &minio-common
     timeout: 20s
     retries: 3
   networks:
-    - modulo-demo
+    - quokka
 
 services:
   ### Camunda Engine ###
@@ -31,7 +31,7 @@ services:
     ports:
       - 8080:8080
     networks:
-      - modulo-demo
+      - quokka
   ### OpenTOSCA Ecosystem ###
   container:
     image: opentosca/container:v3.0.0
@@ -45,15 +45,15 @@ services:
       ENGINE_PLAN_BPEL_HOSTNAME: engine-plan
       CONTAINER_DEPLOYMENT_TESTS: 'false'
     networks:
-      - modulo-demo
+      - quokka
   engine-plan:
     image: opentosca/ode:v2.4.0
     networks:
-      - modulo-demo
+      - quokka
   engine-ia:
     image: opentosca/engine-ia:v2.1.0
     networks:
-      - modulo-demo
+      - quokka
   winery:
     build: initialized-winery
     logging:
@@ -66,7 +66,7 @@ services:
       TOPOLOGYMODELER_HOSTNAME: $PUBLIC_HOSTNAME
       CONTAINER_HOSTNAME: $PUBLIC_HOSTNAME
     networks:
-      - modulo-demo
+      - quokka
   dind:
     image: opentosca/dind:v1.0.0
     privileged: true
@@ -76,7 +76,7 @@ services:
      # - DOCKER_DAEMON_ARGS=--dns 129.69.211.1 --dns 129.69.215.5 -D
       - DOCKER_DAEMON_ARGS=--dns 8.8.8.8 --dns 8.8.4.4 -D
     networks:
-      - modulo-demo
+      - quokka
   ### Error-Mitigation Service ###
   minio1:
     <<: *minio-common
@@ -102,7 +102,7 @@ services:
       - minio1
       - minio2
     networks:
-      - modulo-demo
+      - quokka
   error-mitigation-service:
     image: planqk/error-mitigation-service:v0.0.1
     command: app.py
@@ -113,8 +113,8 @@ services:
     depends_on:
       - nginx
     networks:
-      - modulo-demo
+      - quokka
 
 networks:
-  modulo-demo:
+  quokka:
     driver: bridge

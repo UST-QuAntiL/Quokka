@@ -3,21 +3,15 @@ services:
   execution-service:
     build: ./execution-service
     ports:
-      - '8085:5000'
+      - '5075:5075'
     networks:
-      - quantme
+      - quokka
   optimization-service:
     build: ./optimization-service
     ports:
-      - '8087:5000'
+      - '5074:5074'
     networks:
-      - quantme
-  objective-function-service:
-    build: ./objective-function-service
-    ports:
-      - '8088:5000'
-    networks:
-      - quantme
+      - quokka
 networks:
-  quantme:
+  quokka:
     driver: bridge

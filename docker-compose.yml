@@ -22,7 +22,7 @@ x-minio-common: &minio-common
     timeout: 20s
     retries: 3
   networks:
-    - modulo-demo
+    - quokka
 
 services:
   ### Camunda Engine ###
@@ -31,7 +31,7 @@ services:
     ports:
       - 8080:8080
     networks:
-      - modulo-demo
+      - quokka
 
   ### Error-Mitigation Service ###
   minio1:
@@ -58,7 +58,7 @@ services:
       - minio1
       - minio2
     networks:
-      - modulo-demo
+      - quokka
   error-mitigation-service:
     image: planqk/error-mitigation-service:v0.3.0
     command: app.py
@@ -69,39 +69,48 @@ services:
     depends_on:
       - nginx
     networks:
-      - modulo-demo
+      - quokka
       
   execution-service:
+    image: planqk/execution-service:v0.1.0
     build: ./services/execution-service
     ports:
-      - '8086:5000'
+      - '5075:5075'
     networks:
-      - modulo-demo
+      - quokka
       
   optimization-service:
+    image: planqk/optimization-service:v0.1.0
     build: ./services/optimization-service
     ports:
-      - '8087:5000'
+      - '5074:5074'
     networks:
-      - modulo-demo
+      - quokka
     env_file:
      - ip.env
       
   objective-function-service:
-    build: ./services/objective-function-service
+    image: planqk/objective-function-service:v0.1.0
     ports:
-      - '8088:5000'
+      - '5072:5072'
     networks:
-      - modulo-demo   
+      - quokka
       
   circuit-generation-service:
-    build: ./services/circuit-generation-service
+    image: planqk/quantum-circuit-generator:v0.1.0
     ports:
-      - '8089:5000'
+      - '5073:5073'
     networks:
-      - modulo-demo   
+      - quokka
+
+  quokka-gateway:
+    image: planqk/quokka-gateway:v0.1.0
+    ports:
+      - '6474:6474'
+    networks:
+      - quokka
 
 networks:
-  modulo-demo:
+  quokka:
     driver: bridge
 
