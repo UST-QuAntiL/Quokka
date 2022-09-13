@@ -12,7 +12,7 @@ Thus, Quokka provides the following functionalities as services via a single End
 5. [Optimization]((https://github.com/UST-QuAntiL/Quokka/services/optimization-service))
 
 To integrate all these services and manage the control and data flow, Quokka is best used in combination with workflows.
-A tutorial ca be found [here](#Running a workflow-based quantum application)
+A tutorial ca be found [here](#running-a-workflow-based-quantum-application)
 
 
 ## Running Quokka
@@ -27,7 +27,7 @@ Afterwards, Quokka is available at [http://127.0.0.1:6474/](http://127.0.0.1:647
 Building a workflow-based quantum application is a multi-step process that starts with setting up the necessary tools for modeling the application.
 
 ### Setting up the Requisites:
-First, get the API gateway and all related services running, thus, start Quokka as described in [**Running Quokka**](#Running Quokka)
+First, get the API gateway and all related services running, thus, start Quokka as described in [**Running Quokka**](#running-quokka)
 
 Next, a modeling tool for suitable for modeling quantum applications is required.
 In this example, we use the [QuantME Modeling and Transformation Framework](https://github.com/UST-QuAntiL/QuantME-TransformationFramework).
