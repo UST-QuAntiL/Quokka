@@ -69,7 +69,7 @@ Note: updating the configuration might require a refresh of the editor. This can
 Before executing the workflow it now has to be transformed into a BPMN standard-compliant workflow.
 Thus, click the ``Transformation`` button.
 Afterwards, all quantum-specific tasks should have been replaced with standard BPMN elements.
-![QuantME Transformation Framework](./docs/modeler-configuration.png)
+![QuantME Transformation Framework](./docs/modeler-transformation.png)
 
 Next, deploy the workflow by clicking the ``Workflow Deployment`` button.
 Once it is successfully deployed, open the UI of the Camunda BPMN engine via: ``$PUBLIC_HOSTNAME:8080/camunda``

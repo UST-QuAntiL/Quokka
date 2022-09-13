@@ -1,6 +1,6 @@
 # Circuit Execution Service
 
-The circuit execution service enables the execution of quantum cirucit on IBM quantum devices.
+The circuit execution service enables the execution of quantum circuits on IBM quantum devices.
 
 This services provides access to all globally available IBM quantum devices and quantum simulators. 
 Moreover, it allows users to execute quantum circuits on local simulators using noise models of real quantum devices.
@@ -15,7 +15,7 @@ The easiest way to get start is using a pre-built Docker image:
 
 Alternatively, the application can be built manually:
 1. Clone the repository using ``git clone https://github.com/UST-QuAntiL/Quokka.git``
-2. Navigate to the repository  ``cd objective-function-service``
+2. Navigate to the repository  ``cd Quokka/services/execution-service``
 3. Build the Docker container: ``docker build -t execution-service:0.1 .``
 4. Run the Docker container: ``docker run -p 5075:5075 execution-service:0.1``
 
@@ -23,7 +23,7 @@ Then the application can be accessed via: [http://127.0.0.1:5075](http://127.0.0
 
 ## API Documentation
 
-The objective function service provides a Swagger UI, specifying the request schemas and showcasing exemplary requests for all API endpoints.
+The execution service provides a Swagger UI, specifying the request schemas and showcasing exemplary requests for all API endpoints.
  * Swagger UI: [http://127.0.0.1:5075/app/swagger-ui](http://127.0.0.1:5075/app/swagger-ui).
 
 
@@ -31,15 +31,25 @@ The objective function service provides a Swagger UI, specifying the request sch
 ## Developer Guide
 
 ### Setup (exemplary for ubuntu 18.04): 
-* ``git clone https://github.com/UST-QuAntiL/objective-function-service.git`` 
-* ``cd objective-function-service``
-* ``sudo -H pip install virtualenv`` (if you don't have virtualenv installed)
-* ``virtualenv venv`` (create virtualenv named 'venv')
-* ``source venv/bin/activate`` (enter virtualenv; in Windows systems activate might be in ``venv/Scripts``)
-* ``pip install -r requirements.txt`` (install application requirements)
+```shell
+git clone https://github.com/UST-QuAntiL/Quokka.git
+cd Quokka/services/execution-service
+
+# if virtualenv is not installed
+sudo -H pip install virtualenv
+
+# create new virtualenv called 'venv'
+virtualenv venv
+
+# activate virtualenv; in Windows systems activate might be in 'venv/Scripts'
+source venv/bin/activate
+
+#install application requirements.
+pip install -r requirements.txt
+```
 
 ### Execution:
-* Run the application with: ``flask run --port=5072``
+* Run the application with: ``flask run --port=5075``
 * Test with: ``python -m unittest discover``
 * Coverage with: ``coverage run --branch --include 'app/*' -m unittest discover; coverage report``
 
