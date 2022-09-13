@@ -35,7 +35,7 @@ jobs:
         if: ${{ steps.vars.outputs.tag }} == 'master'
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./services/execution-service
           file: ./services/execution-service/Dockerfile
           push: true
           tags: planqk/execution-service:latest
@@ -44,7 +44,7 @@ jobs:
         if: ${{ steps.vars.outputs.tag }} != 'master'
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./services/execution-service
           file: ./services/execution-service/Dockerfile
           push: true
           tags: planqk/execution-service:${{ steps.vars.outputs.tag }}
@@ -53,7 +53,7 @@ jobs:
         if: ${{ steps.vars.outputs.tag == 'master' }}
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./services/optimization-service
           file: ./services/optimization-service/Dockerfile
           push: true
           tags: planqk/optimization-service:latest
@@ -62,7 +62,7 @@ jobs:
         if: ${{ steps.vars.outputs.tag != 'master' }}
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./services/optimization-service
           file: ./services/optimization-service/Dockerfile
           push: true
           tags: planqk/optimization-service:${{ steps.vars.outputs.tag }}
