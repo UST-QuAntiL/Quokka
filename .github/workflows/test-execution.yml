@@ -23,5 +23,5 @@ jobs:
     - name: Test with unittest and coverage-report
       working-directory: ./services/execution-service
       run: |
-        coverage run --branch --include 'app/*' -m unittest discover
-        coverage report
+        python -m unittest discover
+
