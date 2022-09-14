@@ -3,34 +3,31 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
+The circuit execution service enables the execution of quantum circuits on different quantum devices.
 
-The circuit execution service enables the execution of quantum circuits on IBM quantum devices.
-
-This services provides access to all globally available IBM quantum devices and quantum simulators. 
+The service provides access to all quantum devices and quantum simulators available via [IBMQ](https://quantum-computing.ibm.com/). 
 Moreover, it allows users to execute quantum circuits on local simulators using noise models of real quantum devices.
 Thereby, users can choose between a complete noise model or a noise model that only includes measurement errors.
-Furthermore, this service also supports the german IBM quantum devices.
+Furthermore, this service also supports the german IBM quantum devices listed [here](https://de.quantum-computing.ibm.com/).
 
+## Running the Service
 
-## Running the Application
 The easiest way to get start is using a pre-built Docker image:
 
 ``docker run -p 5075:5075 planqk/execution-service``
 
-Alternatively, the application can be built manually:
+Alternatively, the service can be built manually:
 1. Clone the repository using ``git clone https://github.com/UST-QuAntiL/Quokka.git``
-2. Navigate to the repository  ``cd Quokka/services/execution-service``
-3. Build the Docker container: ``docker build -t execution-service:0.1 .``
-4. Run the Docker container: ``docker run -p 5075:5075 execution-service:0.1``
+2. Navigate to the corresponding folder within the cloned repository  ``cd Quokka/services/execution-service``
+3. Build the Docker container: ``docker build -t execution-service .``
+4. Run the Docker container: ``docker run -p 5075:5075 execution-service``
 
-Then the application can be accessed via: [http://127.0.0.1:5075](http://127.0.0.1:5075).
+Then the service can be accessed via: [http://127.0.0.1:5075](http://127.0.0.1:5075).
 
 ## API Documentation
 
 The execution service provides a Swagger UI, specifying the request schemas and showcasing exemplary requests for all API endpoints.
  * Swagger UI: [http://127.0.0.1:5075/app/swagger-ui](http://127.0.0.1:5075/app/swagger-ui).
-
-
 
 ## Developer Guide
 
@@ -65,3 +62,6 @@ Unless required by applicable law or agreed to in writing, Licensor provides the
 
 ## Haftungsausschluss
 Dies ist ein Forschungsprototyp. Die Haftung für entgangenen Gewinn, Produktionsausfall, Betriebsunterbrechung, entgangene Nutzungen, Verlust von Daten und Informationen, Finanzierungsaufwendungen sowie sonstige Vermögens- und Folgeschäden ist, außer in Fällen von grober Fahrlässigkeit, Vorsatz und Personenschäden, ausgeschlossen.
+
+## Acknowledgements
+The initial code contribution has been supported by the project [SEQUOIA](https://www.iaas.uni-stuttgart.de/forschung/projekte/sequoia/) funded by the [Baden-Wuerttemberg Ministry of the Economy, Labour and Housing](https://wm.baden-wuerttemberg.de/).
