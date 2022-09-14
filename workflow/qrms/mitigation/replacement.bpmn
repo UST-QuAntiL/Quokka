@@ -16,72 +16,40 @@
             <camunda:inputParameter name="payload">
               <camunda:script scriptFormat="JavaScript">
 var qpu = execution.getVariable("qpu");
-var token = execution.getVariable("credentials");
+var token = execution.getVariable("token");
+var hub = execution.getVariable("hub");
+var group = execution.getVariable("group");
+var project = execution.getVariable("project");
+var url = execution.getVariable("ibmqUrl");
 var counts = execution.getVariable("counts");
 var maxAge = execution.getVariable("maxAge");
+var measQubits = execution.getVariable("measQubits")
 var noiseModel = execution.getVariable("noiseModel");
 var onlyMeasurementErrors = execution.getVariable("onlyMeasurementErrors");
-counts = S(counts);
-counts = counts.elements();
-print(counts);
+var counts = execution.getVariable("counts").toString();             
+                counts = JSON.parse(counts)
+                counts = counts["counts"]
 
 
-var qubits = [];
-//counts.forEach(dict =&gt; qubits.push(Array.from(Array(Object.keys(dict).length).keys())));
-//print(counts[0]['10010']);
-//counts.forEach(dict =&gt; qubits.push(Array.from(Array(Object.keys(JSON.parse(dict)).length).keys())));
-//counts.forEach(dict =&gt; print(dict));
-//for (let i = 0; i &lt; counts.length; i++) {
-//	print(counts[i])
-//}
-
-function generateArray(length){
-	var array = []
-	var iterator = new java.util.Iterator({
-	  i: 0,
-	  hasNext: function() {
-		return this.i &lt; length;
-	  },
-	  next: function() {
-		return this.i++;
-	  }
-	});
-
-	print(iterator instanceof Java.type("java.util.Iterator"));
-	while (iterator.hasNext()) {
-	  value = iterator.next();
-	  array.push(value);
-	}
-	print(array)
-	return array
-}	
-
-for each (var el in counts) print(Object.keys(JSON.parse(el))[0].length);
-for each (var el in counts) qubits.push(generateArray(Object.keys(JSON.parse(el))[0].length)); 
-
-print(qubits);
+measQubits = measQubits.substring(1,measQubits.length-1).replace(" ", "");
+                measQubits = measQubits.split(",");
+                new_matrix = []
+                for each (var val in measQubits) {
+                   new_matrix.push(parseFloat(val));
+                }
+          measQubits=new_matrix
 
 
-
-counts_parsed =[]
-for each (var el in counts) counts_parsed.push(JSON.parse(el));
-//counts = counts[0];
-//counts = JSON.parse(counts);
-//print(counts['10010']);
-print(counts_parsed)
-
-
-var myJson = {"counts": counts_parsed,
-"mitigation_method":"inversion","cm_gen_method": "standard", "qpu": qpu, "qubits": qubits, "max_age":maxAge, 
+var myJson = {"counts": counts,
+"mitigation_method":"inversion","cm_gen_method": "standard", "qpu": qpu, "qubits": measQubits, "max_age":maxAge, 
 "credentials":{
-    "token": token
-    
-    },
+                    "token": token, "hub": hub, "group": group, "project":project, "url":url
+                    },
 "provider": "IBM", "noise_model": noiseModel, "only_measurement_errors": onlyMeasurementErrors
 };
-
+                
+                
 myJson = JSON.stringify(myJson);
-//execution.setVariable("myJson",myJson);
 myJson =myJson;</camunda:script>
             </camunda:inputParameter>
             <camunda:outputParameter name="mitigatedCounts">

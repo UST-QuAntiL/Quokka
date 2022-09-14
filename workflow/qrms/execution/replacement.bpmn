@@ -48,7 +48,7 @@ counts;
 
 </camunda:script>
             </camunda:outputParameter>
-            <camunda:outputParameter name="meas_qubits">
+            <camunda:outputParameter name="measQubits">
               <camunda:script scriptFormat="JavaScript">
 var resp = connector.getVariable("response")
                 resp = JSON.parse(resp)

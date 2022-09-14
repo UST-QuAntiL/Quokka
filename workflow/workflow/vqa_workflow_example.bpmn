@@ -12,7 +12,7 @@
           <camunda:formField id="ibmqUrl" label="IBMQ URL" type="string" defaultValue="https://auth.quantum-computing.ibm.com/api" />
           <camunda:formField id="qpu" label="IBMQ Backend name" type="string" defaultValue="simulator" />
           <camunda:formField id="noiseModel" label="Noise Model" type="string" />
-          <camunda:formField id="onlyMeasurementErrors" label="Noise Model contains only measurement errors" type="string" />
+          <camunda:formField id="onlyMeasurementErrors" label="Noise Model contains only measurement errors" type="boolean" />
           <camunda:formField id="optimizer" label="optimizer" type="string" defaultValue="cobyla" />
           <camunda:formField id="objFun" label="Objective Function for evaluation" type="string" defaultValue="expectation" />
           <camunda:formField id="gammas" label="gammas" type="string" defaultValue="[1]" />
@@ -40,7 +40,7 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${converged == 'false'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_19r6ece" sourceRef="Task_1qyuei8" targetRef="ExclusiveGateway_0tcozbv" />
-    <quantme:readoutErrorMitigationTask id="Task_0k5vfu2" name="Readout Error Mitigation" provider="ibm" qpu="test" shots="1000" calibrationMethod="fullMatrix" mitigationMethod="matrixInversion">
+    <quantme:readoutErrorMitigationTask id="Task_0k5vfu2" name="Readout Error Mitigation" provider="ibm" qpu="test" shots="1000" calibrationMethod="fullMatrix" mitigationMethod="matrixInversion" maxAge="360">
       <bpmn:incoming>SequenceFlow_1fv1q7j</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1yekqw0</bpmn:outgoing>
     </quantme:readoutErrorMitigationTask>
@@ -139,8 +139,13 @@ resp;</camunda:script>
                   }
                   new_matrix.push(new_arr)
                 }
-
-								var counts = execution.getVariable("counts").toString();             
+					
+                var counts = execution.getVariable("mitigatedCounts")
+                if (!counts){
+                  counts = execution.getVariable("counts").toString(); 
+                } else {
+                	counts= counts.toString();
+                }
                 counts = JSON.parse(counts)
                 counts = counts["counts"]
                 var objFun = execution.getVariable("objFun");
@@ -306,14 +311,14 @@ typedFileValue</camunda:script>
       <bpmndi:BPMNShape id="ReadoutErrorMitigationTask_1rcxeya_di" bpmnElement="Task_0k5vfu2">
         <dc:Bounds x="900" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_14bmf2p_di" bpmnElement="Task_0iim6gd">
+        <dc:Bounds x="900" y="350" width="100" height="80" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="EndEvent_0g8k4yh_di" bpmnElement="EndEvent_0g8k4yh">
         <dc:Bounds x="1612" y="232" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ServiceTask_0jruw2w_di" bpmnElement="Task_1cl77j3">
         <dc:Bounds x="270" y="210" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ServiceTask_0d5rjdi_di" bpmnElement="Task_1442y9q">
-        <dc:Bounds x="1120" y="210" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ExclusiveGateway_13c00i2_di" bpmnElement="ExclusiveGateway_13c00i2" isMarkerVisible="true">
         <dc:Bounds x="455" y="225" width="50" height="50" />
@@ -330,8 +335,8 @@ typedFileValue</camunda:script>
       <bpmndi:BPMNShape id="UserTask_16yecuv_di" bpmnElement="Task_0n6qtk0">
         <dc:Bounds x="1400" y="210" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ServiceTask_14bmf2p_di" bpmnElement="Task_0iim6gd">
-        <dc:Bounds x="900" y="350" width="100" height="80" />
+      <bpmndi:BPMNShape id="ServiceTask_0d5rjdi_di" bpmnElement="Task_1442y9q">
+        <dc:Bounds x="1120" y="210" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
