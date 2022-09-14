@@ -1,9 +1,8 @@
 # Quokka
-
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-Quokka is an ecosystem enabling the service-based execution of quantum algorithms, in particular Variational Quantum Algorithms (VQAs).
-As VQAs are hybrid quantum algorithms comprising many classical and quantum tasks a variety of services implementing these tasks are required.
+Quokka is an ecosystem enabling the service-based execution of quantum algorithms, in particular [Variational Quantum Algorithms (VQAs)](https://www.nature.com/articles/s42254-021-00348-9).
+As VQAs are hybrid quantum algorithms comprising many classical and quantum tasks, a variety of services implementing these tasks are required.
 Thus, Quokka provides the following functionalities as services via a single Endpoint:
 1. [Quantum circuit generation](https://github.com/UST-QuAntiL/quantum-circuit-generator)
 2. [Quantum circuit execution](./services/execution-service)
@@ -12,8 +11,7 @@ Thus, Quokka provides the following functionalities as services via a single End
 5. [Optimization](./services/optimization-service)
 
 To integrate all these services and manage the control and data flow, Quokka is best used in combination with workflows.
-A tutorial ca be found [here](#running-a-workflow-based-quantum-application)
-
+A tutorial can be found [here](#running-a-workflow-based-quantum-application).
 
 ## Running Quokka
 The easiest way to get start with quokka is using [Docker-Compose](https://docs.docker.com/compose/): 
@@ -90,3 +88,6 @@ Unless required by applicable law or agreed to in writing, Licensor provides the
 
 ## Haftungsausschluss
 Dies ist ein Forschungsprototyp. Die Haftung für entgangenen Gewinn, Produktionsausfall, Betriebsunterbrechung, entgangene Nutzungen, Verlust von Daten und Informationen, Finanzierungsaufwendungen sowie sonstige Vermögens- und Folgeschäden ist, außer in Fällen von grober Fahrlässigkeit, Vorsatz und Personenschäden, ausgeschlossen.
+
+## Acknowledgements
+The initial code contribution has been supported by the project [SEQUOIA](https://www.iaas.uni-stuttgart.de/forschung/projekte/sequoia/) funded by the [Baden-Wuerttemberg Ministry of the Economy, Labour and Housing](https://wm.baden-wuerttemberg.de/).
