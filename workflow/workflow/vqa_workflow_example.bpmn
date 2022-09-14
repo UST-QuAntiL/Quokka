@@ -143,11 +143,13 @@ resp;</camunda:script>
                 var counts = execution.getVariable("mitigatedCounts")
                 if (!counts){
                   counts = execution.getVariable("counts").toString(); 
-                } else {
-                	counts= counts.toString();
-                }
                 counts = JSON.parse(counts)
                 counts = counts["counts"]
+                } else {
+                	counts= counts.toString();
+                counts = JSON.parse(counts)
+                }
+                
                 var objFun = execution.getVariable("objFun");
 
                 var myJson = {"adj_matrix": new_matrix,"counts": counts,"objFun": objFun, "visualization": "True"};
