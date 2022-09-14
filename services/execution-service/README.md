@@ -18,7 +18,7 @@ The easiest way to get start is using a pre-built Docker image:
 
 Alternatively, the service can be built manually:
 1. Clone the repository using ``git clone https://github.com/UST-QuAntiL/Quokka.git``
-2. Navigate to the corresponding folder within the cloned repository  ``cd Quokka/services/execution-service``
+2. Navigate to the corresponding folder within the cloned repository ``cd Quokka/services/execution-service``
 3. Build the Docker container: ``docker build -t execution-service .``
 4. Run the Docker container: ``docker run -p 5075:5075 execution-service``
 
