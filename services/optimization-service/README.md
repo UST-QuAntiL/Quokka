@@ -1,7 +1,7 @@
 # Optimization Service
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-The circuit enables the use of optimization libraries such as [Scipy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html) or [Qiskit Terra](https://github.com/Qiskit/qiskit-terra/tree/main/qiskit/algorithms/optimizers).
+The optimization service enables the usage of optimization libraries such as [Scipy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html) or [Qiskit Terra](https://github.com/Qiskit/qiskit-terra/tree/main/qiskit/algorithms/optimizers).
 
 This service decouples the optimization process from the other components.
 Thus, objective functions, cost functions, and other methods typically directly integrated into the optimizer can be executed in a loosely coupled fashion.
