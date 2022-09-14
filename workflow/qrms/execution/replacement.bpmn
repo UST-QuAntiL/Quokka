@@ -16,6 +16,7 @@
             <camunda:inputParameter name="payload">
               <camunda:script scriptFormat="JavaScript">var qpu = execution.getVariable("qpu");
                 var noiseModel = execution.getVariable("noiseModel");
+				var onlyMeasurementErrors = execution.getVariable("onlyMeasurementErrors");
 				var token = execution.getVariable("token");
 				var hub = execution.getVariable("hub");
 				var group = execution.getVariable("group");
@@ -30,7 +31,7 @@
                 var myJson = {"provider": "ibm", "qpu": qpu,"circuit": circuit, "shots": shots, "credentials":{
                     "token": token, "hub": hub, "group": group, "project":project, "url":url
                     }
-					, "noiseModel": noiseModel
+					, "noise_model": noiseModel, "only_measurement_errors": onlyMeasurementErrors
                 };
                
                 

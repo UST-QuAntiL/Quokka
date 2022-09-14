@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:quantme="https://github.com/UST-QuAntiL/QuantME-Quantum4BPMN" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1a0cx7a" targetNamespace="http://bpmn.io/schema/bpmn" exporter="QuantME Modeler" exporterVersion="4.5.0-nightly.20220823">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:quantme="https://github.com/UST-QuAntiL/QuantME-Quantum4BPMN" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1a0cx7a" targetNamespace="http://bpmn.io/schema/bpmn" exporter="QuantME Modeler" exporterVersion="4.5.0-nightly.20220914">
   <bpmn:process id="sequoia_tsp_workflow" isExecutable="true">
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:extensionElements>
@@ -12,12 +12,12 @@
           <camunda:formField id="ibmqUrl" label="IBMQ URL" type="string" defaultValue="https://auth.quantum-computing.ibm.com/api" />
           <camunda:formField id="qpu" label="IBMQ Backend name" type="string" defaultValue="simulator" />
           <camunda:formField id="noiseModel" label="Noise Model" type="string" />
+          <camunda:formField id="onlyMeasurementErrors" label="Noise Model contains only measurement errors" type="string" />
           <camunda:formField id="optimizer" label="optimizer" type="string" defaultValue="cobyla" />
           <camunda:formField id="objFun" label="Objective Function for evaluation" type="string" defaultValue="expectation" />
           <camunda:formField id="gammas" label="gammas" type="string" defaultValue="[1]" />
           <camunda:formField id="betas" label="betas" type="string" defaultValue="[1]" />
           <camunda:formField id="p" label="p" type="string" defaultValue="1" />
-          
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:outgoing>SequenceFlow_0sr2iwc</bpmn:outgoing>
@@ -64,7 +64,7 @@
                 <camunda:entry key="Content-Type">application/json</camunda:entry>
               </camunda:map>
             </camunda:inputParameter>
-            <camunda:inputParameter name="url">http://quokka:6474/quokka/optimization/optimization-service</camunda:inputParameter>
+            <camunda:inputParameter name="url">http://quokka-gateway:6474/quokka/optimization/optimization-service</camunda:inputParameter>
             <camunda:inputParameter name="payload">
               <camunda:script scriptFormat="JavaScript">var optimizer = execution.getVariable("optimizer");
 								var gammas = execution.getVariable("gammas");
@@ -124,7 +124,7 @@ resp;</camunda:script>
                 <camunda:entry key="Content-Type">application/json</camunda:entry>
               </camunda:map>
             </camunda:inputParameter>
-            <camunda:inputParameter name="url">http://quokka:6474/quokka/objective-function/objective/tsp</camunda:inputParameter>
+            <camunda:inputParameter name="url">http://quokka-gateway:6474/quokka/objective-function/objective/tsp</camunda:inputParameter>
             <camunda:inputParameter name="payload">
               <camunda:script scriptFormat="JavaScript">var matrix = execution.getVariable("adjMatrix");
                 matrix = matrix.substring(1,matrix.length-1).replace(" ", "");
@@ -263,7 +263,7 @@ typedFileValue</camunda:script>
         <di:waypoint x="455" y="250" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0bkpwmi_di" bpmnElement="SequenceFlow_0bkpwmi">
-        <di:waypoint x="940" y="390" />
+        <di:waypoint x="900" y="390" />
         <di:waypoint x="480" y="390" />
         <di:waypoint x="480" y="275" />
       </bpmndi:BPMNEdge>
@@ -279,7 +279,7 @@ typedFileValue</camunda:script>
       <bpmndi:BPMNEdge id="SequenceFlow_09rk0yy_di" bpmnElement="SequenceFlow_09rk0yy">
         <di:waypoint x="1280" y="275" />
         <di:waypoint x="1280" y="390" />
-        <di:waypoint x="1040" y="390" />
+        <di:waypoint x="1000" y="390" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1288" y="293" width="15" height="14" />
         </bpmndi:BPMNLabel>
@@ -288,6 +288,9 @@ typedFileValue</camunda:script>
         <di:waypoint x="198" y="250" />
         <di:waypoint x="270" y="250" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="162" y="232" width="36" height="36" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="QuantumCircuitLoadingTask_0m4b433_di" bpmnElement="Task_0dw496o">
         <dc:Bounds x="540" y="210" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -303,11 +306,11 @@ typedFileValue</camunda:script>
       <bpmndi:BPMNShape id="ReadoutErrorMitigationTask_1rcxeya_di" bpmnElement="Task_0k5vfu2">
         <dc:Bounds x="900" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ServiceTask_14bmf2p_di" bpmnElement="Task_0iim6gd">
-        <dc:Bounds x="940" y="350" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="EndEvent_0g8k4yh_di" bpmnElement="EndEvent_0g8k4yh">
         <dc:Bounds x="1612" y="232" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_0jruw2w_di" bpmnElement="Task_1cl77j3">
+        <dc:Bounds x="270" y="210" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ServiceTask_0d5rjdi_di" bpmnElement="Task_1442y9q">
         <dc:Bounds x="1120" y="210" width="100" height="80" />
@@ -327,11 +330,8 @@ typedFileValue</camunda:script>
       <bpmndi:BPMNShape id="UserTask_16yecuv_di" bpmnElement="Task_0n6qtk0">
         <dc:Bounds x="1400" y="210" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ServiceTask_0jruw2w_di" bpmnElement="Task_1cl77j3">
-        <dc:Bounds x="270" y="210" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-        <dc:Bounds x="162" y="232" width="36" height="36" />
+      <bpmndi:BPMNShape id="ServiceTask_14bmf2p_di" bpmnElement="Task_0iim6gd">
+        <dc:Bounds x="900" y="350" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -19,6 +19,8 @@ var qpu = execution.getVariable("qpu");
 var token = execution.getVariable("credentials");
 var counts = execution.getVariable("counts");
 var maxAge = execution.getVariable("maxAge");
+var noiseModel = execution.getVariable("noiseModel");
+var onlyMeasurementErrors = execution.getVariable("onlyMeasurementErrors");
 counts = S(counts);
 counts = counts.elements();
 print(counts);
@@ -75,13 +77,14 @@ var myJson = {"counts": counts_parsed,
     "token": token
     
     },
-"provider": "IBM"};
+"provider": "IBM", "noise_model": noiseModel, "only_measurement_errors": onlyMeasurementErrors
+};
 
 myJson = JSON.stringify(myJson);
 //execution.setVariable("myJson",myJson);
 myJson =myJson;</camunda:script>
             </camunda:inputParameter>
-            <camunda:outputParameter name="counts">
+            <camunda:outputParameter name="mitigatedCounts">
               <camunda:script scriptFormat="JavaScript">//${S(response)}
 
 var resp = connector.getVariable("response")
