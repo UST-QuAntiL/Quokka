@@ -64,8 +64,6 @@ myJson =myJson</camunda:script>
             <camunda:outputParameter name="circuit">
               <camunda:script scriptFormat="JavaScript">
 var resp = connector.getVariable("response");
-            print(typeof(resp));
-			print('resp'+ resp);
 			var result = S(resp);  
 			qasm = result.prop("circuit");
             qasm = S(JSON.stringify({"circuit":qasm.value()}));

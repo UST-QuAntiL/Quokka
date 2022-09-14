@@ -56,9 +56,7 @@ myJson =myJson;</camunda:script>
               <camunda:script scriptFormat="JavaScript">//${S(response)}
 
 var resp = connector.getVariable("response")
-print('resp'+ resp);
 var result = S(resp);
-print('result ' + result );
 result;</camunda:script>
             </camunda:outputParameter>
           </camunda:inputOutput>
