@@ -12,7 +12,7 @@
                 <camunda:entry key="Content-Type">application/json</camunda:entry>
               </camunda:map>
             </camunda:inputParameter>
-            <camunda:inputParameter name="url">http://circuit-generation-service:5000/algorithms/tspqaoa</camunda:inputParameter>
+            <camunda:inputParameter name="url">http://quokka:6474/quokka/circuit-generator/algorithms/tspqaoa</camunda:inputParameter>
             <camunda:inputParameter name="payload">
               <camunda:script scriptFormat="JavaScript">
                 var matrix = execution.getVariable("adjMatrix");

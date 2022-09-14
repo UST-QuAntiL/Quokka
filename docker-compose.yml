@@ -97,14 +97,14 @@ services:
       - quokka
       
   circuit-generation-service:
-    image: planqk/quantum-circuit-generator:v0.1.0
+    image: planqk/quantum-circuit-generator:latest
     ports:
       - '5073:5073'
     networks:
       - quokka
 
   quokka-gateway:
-    image: planqk/quokka-gateway:v0.1.0
+    image: planqk/quokka-gateway:0.1.0
     ports:
       - '6474:6474'
     networks:

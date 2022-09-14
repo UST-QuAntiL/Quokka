@@ -64,7 +64,7 @@
                 <camunda:entry key="Content-Type">application/json</camunda:entry>
               </camunda:map>
             </camunda:inputParameter>
-            <camunda:inputParameter name="url">http://optimization-service:5000/optimization-service</camunda:inputParameter>
+            <camunda:inputParameter name="url">http://quokka:6474/quokka/optimization/optimization-service</camunda:inputParameter>
             <camunda:inputParameter name="payload">
               <camunda:script scriptFormat="JavaScript">var optimizer = execution.getVariable("optimizer");
 								var gammas = execution.getVariable("gammas");
@@ -124,7 +124,7 @@ resp;</camunda:script>
                 <camunda:entry key="Content-Type">application/json</camunda:entry>
               </camunda:map>
             </camunda:inputParameter>
-            <camunda:inputParameter name="url">http://objective-function-service:5000/objective/tsp</camunda:inputParameter>
+            <camunda:inputParameter name="url">http://quokka:6474/quokka/objective-function/objective/tsp</camunda:inputParameter>
             <camunda:inputParameter name="payload">
               <camunda:script scriptFormat="JavaScript">var matrix = execution.getVariable("adjMatrix");
                 matrix = matrix.substring(1,matrix.length-1).replace(" ", "");
