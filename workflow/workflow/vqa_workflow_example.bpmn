@@ -212,7 +212,10 @@ typedFileValue</camunda:script>
     <bpmn:userTask id="Task_0n6qtk0" name="Analyze Results">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="imageUrl" type="string">
+          <camunda:formField id="plotUrl" label="Result Image URL" type="string">
+            <camunda:properties>
+              <camunda:property id="Property_198kcm1" />
+            </camunda:properties>
             <camunda:validation>
               <camunda:constraint name="readonly" />
             </camunda:validation>
@@ -315,14 +318,14 @@ typedFileValue</camunda:script>
       <bpmndi:BPMNShape id="ReadoutErrorMitigationTask_1rcxeya_di" bpmnElement="Task_0k5vfu2">
         <dc:Bounds x="900" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ServiceTask_14bmf2p_di" bpmnElement="Task_0iim6gd">
-        <dc:Bounds x="900" y="350" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="EndEvent_0g8k4yh_di" bpmnElement="EndEvent_0g8k4yh">
         <dc:Bounds x="1612" y="232" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ServiceTask_0jruw2w_di" bpmnElement="Task_1cl77j3">
         <dc:Bounds x="270" y="210" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_0d5rjdi_di" bpmnElement="Task_1442y9q">
+        <dc:Bounds x="1110" y="210" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ExclusiveGateway_13c00i2_di" bpmnElement="ExclusiveGateway_13c00i2" isMarkerVisible="true">
         <dc:Bounds x="455" y="225" width="50" height="50" />
@@ -339,8 +342,8 @@ typedFileValue</camunda:script>
       <bpmndi:BPMNShape id="UserTask_16yecuv_di" bpmnElement="Task_0n6qtk0">
         <dc:Bounds x="1400" y="210" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ServiceTask_0d5rjdi_di" bpmnElement="Task_1442y9q">
-        <dc:Bounds x="1110" y="210" width="100" height="80" />
+      <bpmndi:BPMNShape id="ServiceTask_14bmf2p_di" bpmnElement="Task_0iim6gd">
+        <dc:Bounds x="900" y="350" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -21,6 +21,16 @@ The easiest way to get start with quokka is using [Docker-Compose](https://docs.
 
 Afterwards, Quokka is available at [http://127.0.0.1:6474/](http://127.0.0.1:6474/)
 
+
+## API Documentation
+
+A description of the API Gateway uniting the Quokka services can be found [here](https://github.com/UST-QuAntiL/Quokka-Gateway).
+
+It contains references to all connected services. 
+Their API specifications and examples are available via Swagger at [http://127.0.0.1:SERVICE-PORT/api/swagger-ui](http://127.0.0.1:SERVICE-PORT/api/swagger-ui).
+
+
+
 ## Running a workflow-based quantum application
 Building a workflow-based quantum application is a multi-step process that starts with setting up the necessary tools for modeling the application.
 
@@ -72,16 +82,34 @@ Afterwards, all quantum-specific tasks should have been replaced with standard B
 Next, deploy the workflow by clicking the ``Workflow Deployment`` button.
 Once it is successfully deployed, open the UI of the Camunda BPMN engine via: ``$PUBLIC_HOSTNAME:8080/camunda``
 
-TODO
+First, create an account in the Camunda engine and log in. Then, the following screen is displayed:
+![Camunda Loginscreen](./docs/camunda-loginscreen.png)
+
+Click on the home icon in the top-right corner and select ``Tasklist``.
+
+To instantiate the workflow model, select ``Start process`` on the top-right and select the workflow in the pop-up menu.
+Next, modify the input options according to your requirements and subsequently press ``Start``.
+If the quantum circuits shall be run on a quantum device or use a simulated device noise model, valid IBMQ credentials giving access to the device must be provided.
+![Camunda Start Process](./docs/camunda-startprocess.png)
+
+The UI displays a notification at the bottom-right that the workflow instance was successfully started.
+
+Afterwards, once more click on the home icon on the top-right and select ``Cockpit``.
+Click on the ``Running Process Instance``, then select the started workflow, and afterwards click on the workflow ID. 
+Now the workflow's token flow, and the changing parameters can be observed. 
+To see the current state of the workflow instance refresh the page.
+![Camunda Start Process](./docs/camunda-wfoverview.png)
+
+Wait until the token reaches the final user task in the workflow as depicted below. 
+This might take some time, depending on the circuit size, the execution parameters, and the utilization of the selected QPU.
+![Camunda Start Process](./docs/camunda-processfinished.png)
 
 
+Afterwards, switch to the Camunda Tasklist via the home menu and click on ``Add a simple filter`` on the left.
+Now, the task object for the human task should be visible in the task list. Click on the task object and then on the ``Claim`` button to get the URL for the plot of the execution result.
+![Camunda Analyze Results](./docs/camunda-analyzeresults.png)
 
-## API Documentation
-
-A description of the API Gateway uniting the Quokka services can be found [here](https://github.com/UST-QuAntiL/Quokka-Gateway).
-It contains references to all connected services. Their API specifications and examples are available via Swagger at [http://127.0.0.1:SERVICE-PORT/api/swagger-ui](http://127.0.0.1:SERVICE-PORT/api/swagger-ui).
-
-
+Finally, click the ``Complete`` button to finish the human task, and as it is the last activity in the workflow to terminate the workflow instance.
 
 ## Disclaimer of Warranty
 Unless required by applicable law or agreed to in writing, Licensor provides the Work (and each Contributor provides its Contributions) on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied, including, without limitation, any warranties or conditions of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE. You are solely responsible for determining the appropriateness of using or redistributing the Work and assume any risks associated with Your exercise of permissions under this License.
