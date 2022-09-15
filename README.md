@@ -14,7 +14,7 @@ To integrate all these services and manage the control and data flow, Quokka is 
 A tutorial can be found [here](#running-a-workflow-based-quantum-application).
 
 ## Running Quokka
-The easiest way to get start with quokka is using [Docker-Compose](https://docs.docker.com/compose/): 
+The easiest way to get start with Quokka is using [Docker-Compose](https://docs.docker.com/compose/): 
 
 1. Clone the repository using ``git clone https://github.com/UST-QuAntiL/Quokka.git``
 2. Navigate to the repository and start it by running ``docker-compose up``
