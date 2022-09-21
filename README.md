@@ -14,13 +14,13 @@ To integrate all these services and manage the control and data flow, Quokka is 
 A tutorial can be found [here](#running-a-workflow-based-quantum-application).
 
 ## Running Quokka
+
 The easiest way to get start with Quokka is using [Docker-Compose](https://docs.docker.com/compose/): 
 
 1. Clone the repository using ``git clone https://github.com/UST-QuAntiL/Quokka.git``
 2. Navigate to the repository and start it by running ``docker-compose up``
 
 Afterwards, Quokka is available at [http://127.0.0.1:6474/](http://127.0.0.1:6474/)
-
 
 ## API Documentation
 
@@ -29,19 +29,20 @@ A description of the API Gateway uniting the Quokka services can be found [here]
 It contains references to all connected services. 
 Their API specifications and examples are available via Swagger at [http://127.0.0.1:SERVICE-PORT/api/swagger-ui](http://127.0.0.1:SERVICE-PORT/api/swagger-ui).
 
+## Running a Workflow-based Quantum Application
 
-
-## Running a workflow-based quantum application
 Building a workflow-based quantum application is a multi-step process that starts with setting up the necessary tools for modeling the application.
 
 ### Setting up the Requisites:
-First, get the API gateway and all related services running, thus, start Quokka as described in [**Running Quokka**](#running-quokka)
 
-Next, a modeling tool for suitable for modeling quantum applications is required.
-In this example, we use the [QuantME Modeling and Transformation Framework](https://github.com/UST-QuAntiL/QuantME-TransformationFramework).
-It uses [Camunda](https://camunda.com) as a BPMN standard-compliant Modeler and implements quantum-specific functionalities defined by [Quantum4BPMN](https://github.com/UST-QuAntiL/QuantME-Quantum4BPMN).
+First, get the API gateway and all related services running by starting Quokka as described in [**Running Quokka**](#running-quokka)
 
-To setup the QuantME Modeling and Transformation Framework by cloning the repository and building the app in a Posix environment (use GitBash or WSL on Windows).
+Next, a modeling tool suitable for modeling workflow-based quantum applications is required.
+In this example, we use the [QuantME Modeling and Transformation Framework (QuantME MTF)](https://github.com/UST-QuAntiL/QuantME-TransformationFramework).
+It is based on the [Camunda Modeler](https://camunda.com/platform/modeler/), a BPMN standard-compliant workflow modeler, and implements quantum-specific functionalities defined by [Quantum4BPMN](https://github.com/UST-QuAntiL/QuantME-Quantum4BPMN).
+
+To set up the QuantME MTF, clone the [repository](https://github.com/UST-QuAntiL/QuantME-TransformationFramework) and build the app in a Posix environment (i.e., use GitBash or WSL on Windows).
+
 ```sh
 git clone https://github.com/UST-QuAntiL/QuantME-TransformationFramework.git
 cd  QuantME-TransformationFramework
@@ -59,24 +60,24 @@ npm run dev
 Afterwards, the following should be shown:
 ![QuantME Transformation Framework](./docs/modeler-after-build.png)
 
-Open the example workflow available [here](.workflow/workflow/vqa_workflow_example) using the QuantME Modeling and Transformation Framework by clicking on ``File`` in the top left corner and subsequently selecting the file in the ``Open File...`` Dialog.
+Open the example workflow available [here](./workflow/vqa_workflow_example.bpmn) using the QuantME MTF by clicking on ``File`` in the top left corner and subsequently selecting the file in the ``Open File...`` dialog.
 
-Next, the repository endpoint for the QuantME replacement models (QRM) must be configured, such that the QuantME specific quantum tasks can be transformed into standard-compliant BPMN tasks before execution.
+Next, the repository endpoint for the QuantME replacement models (QRMs) must be configured, such that the quantum-specific tasks can be transformed into standard-compliant BPMN tasks before execution.
 Thus, click on ``Configuration``, select the ``QRM Data`` tab and insert the values described below:
 * ``QRM Data`` tab:
     * ``QRM Repository User``: UST-QuAntiL
     * ``QRM Repository Name``: Quokka
     * ``QRM Repository Path``: workflow/qrms
 
-Note: updating the configuration might require a refresh of the editor. This can be done by opening the console with F12 and then refreshing the editor by pressing F5.
+Afterwards, click on the ``Update QRMs`` button in the toolbar to reload the QRMs from the specified repository.
 
 ![QuantME Transformation Framework](./docs/modeler-configuration.png)
 
 ### Transforming and Executing the Quantum Workflow
 
-Before executing the workflow it now has to be transformed into a BPMN standard-compliant workflow.
+Before executing the workflow it has to be transformed into a BPMN standard-compliant workflow.
 Thus, click the ``Transformation`` button.
-Afterwards, all quantum-specific tasks should have been replaced with standard BPMN elements.
+Afterwards, all quantum-specific tasks are replaced with standard-compliant BPMN modeling elements.
 ![QuantME Transformation Framework](./docs/modeler-transformation.png)
 
 Next, deploy the workflow by clicking the ``Workflow Deployment`` button.
@@ -87,9 +88,9 @@ First, create an account in the Camunda engine and log in. Then, the following s
 
 Click on the home icon in the top-right corner and select ``Tasklist``.
 
-To instantiate the workflow model, select ``Start process`` on the top-right and select the workflow in the pop-up menu.
+To instantiate the workflow model, click on ``Start process`` on the top-right and select the workflow in the pop-up menu.
 Next, modify the input options according to your requirements and subsequently press ``Start``.
-If the quantum circuits shall be run on a quantum device or use a simulated device noise model, valid IBMQ credentials giving access to the device must be provided.
+If the quantum circuits shall be run on a quantum device or a simulated device noise model is used, valid IBMQ credentials giving access to the device must be provided.
 ![Camunda Start Process](./docs/camunda-startprocess.png)
 
 The UI displays a notification at the bottom-right that the workflow instance was successfully started.
@@ -100,10 +101,9 @@ Now the workflow's token flow, and the changing parameters can be observed.
 To see the current state of the workflow instance refresh the page.
 ![Camunda Start Process](./docs/camunda-wfoverview.png)
 
-Wait until the token reaches the final user task in the workflow as depicted below. 
+Wait until the token reaches the final user task in the workflow, as depicted below. 
 This might take some time, depending on the circuit size, the execution parameters, and the utilization of the selected QPU.
 ![Camunda Start Process](./docs/camunda-processfinished.png)
-
 
 Afterwards, switch to the Camunda Tasklist via the home menu and click on ``Add a simple filter`` on the left.
 Now, the task object for the human task should be visible in the task list. Click on the task object and then on the ``Claim`` button to get the URL for the plot of the execution result.
