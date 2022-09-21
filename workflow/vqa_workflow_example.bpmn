@@ -127,7 +127,7 @@ resp;</camunda:script>
             <camunda:inputParameter name="url">http://quokka-gateway:6474/quokka/objective-evaluation/objective/tsp</camunda:inputParameter>
             <camunda:inputParameter name="payload">
               <camunda:script scriptFormat="JavaScript">var matrix = execution.getVariable("adjMatrix");
-                matrix = matrix.substring(1,matrix.length-1).replace(" ", "");
+                matrix = matrix.substring(1,matrix.length-1).replaceAll(" ", "");
                 matrix = matrix.split("],[");
 								new_matrix = []
                 for each (var arr in matrix) {

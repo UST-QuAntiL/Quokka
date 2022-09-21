@@ -21,7 +21,7 @@
                 var betas = execution.getVariable("betas");
                 var gammas = execution.getVariable("gammas");
                 
-                matrix = matrix.substring(1,matrix.length-1).replace(" ", "");
+                matrix = matrix.substring(1,matrix.length-1).replaceAll(" ", "");
                 matrix = matrix.split("],[");
 								new_matrix = []
                 for each (var arr in matrix) {

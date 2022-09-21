@@ -108,12 +108,14 @@ def execute(transpiled_circuit, shots, backend):
     """Execute the quantum circuit."""
     try:
         job = backend.run(assemble(transpiled_circuit, shots=shots))
-
+        sleep_timer = 0.5
         job_status = job.status()
         while job_status not in JOB_FINAL_STATES:
             print("The execution is still running")
-            time.sleep(10)
+            time.sleep(sleep_timer)
             job_status = job.status()
+            if sleep_timer < 10:
+                sleep_timer = sleep_timer + 1
 
         return job.result().get_counts()
     except (JobError, JobTimeoutError):
