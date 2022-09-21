@@ -7,7 +7,7 @@ Thus, Quokka provides the following functionalities as services via a single End
 1. [Quantum circuit generation](https://github.com/UST-QuAntiL/quantum-circuit-generator)
 2. [Quantum circuit execution](./services/execution-service)
 3. [Error mitigation](https://github.com/UST-QuAntiL/error-mitigation-service)
-4. [Result analysis and objective evaluation](https://github.com/UST-QuAntiL/objective-function-service)
+4. [Result analysis and objective evaluation](https://github.com/UST-QuAntiL/objective-evaluation-service)
 5. [Optimization](./services/optimization-service)
 
 To integrate all these services and manage the control and data flow, Quokka is best used in combination with workflows.
