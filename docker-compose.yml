@@ -8,7 +8,7 @@ volumes:
 
 # Settings and configurations that are common for all containers
 x-minio-common: &minio-common
-  image: quay.io/minio/minio:latest #RELEASE.2022-01-27T03-53-02Z
+  image: quay.io/minio/minio:RELEASE.2022-01-27T03-53-02Z
   command: server --console-address ":9001"  http://minio{1...2}/data{1...2} 
   expose:
     - "9000"
@@ -90,7 +90,7 @@ services:
      - ip.env
       
   objective-evaluation-service:
-    image: planqk/objective-evaluation-service:v0.1.0
+    image: planqk/objective-evaluation-service:latest
     ports:
       - '5072:5072'
     networks:

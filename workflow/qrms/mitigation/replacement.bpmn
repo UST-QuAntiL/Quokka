@@ -27,8 +27,11 @@ var measQubits = execution.getVariable("measQubits")
 var noiseModel = execution.getVariable("noiseModel");
 var onlyMeasurementErrors = execution.getVariable("onlyMeasurementErrors");
 var counts = execution.getVariable("counts").toString();             
-                counts = JSON.parse(counts)
-                counts = counts["counts"]
+counts = JSON.parse(counts)
+counts = counts["counts"]
+
+var calibrationMethod= execution.getVariable("calibrationMethod")
+var mitigationMethod = execution.getVariable("mitigationMethod")
 
 
 measQubits = measQubits.substring(1,measQubits.length-1).replace(" ", "");
@@ -41,7 +44,7 @@ measQubits = measQubits.substring(1,measQubits.length-1).replace(" ", "");
 
 
 var myJson = {"counts": counts,
-"mitigation_method":"inversion","cm_gen_method": "standard", "qpu": qpu, "qubits": measQubits, "max_age":maxAge, 
+"mitigation_method":mitigationMethod,"cm_gen_method": calibrationMethod, "qpu": qpu, "qubits": measQubits, "max_age":maxAge, 
 "credentials":{
                     "token": token, "hub": hub, "group": group, "project":project, "url":url
                     },
