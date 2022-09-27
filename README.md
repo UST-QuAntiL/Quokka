@@ -11,7 +11,10 @@ Thus, Quokka provides the following functionalities as services via a single End
 5. [Optimization](./services/optimization-service)
 
 To integrate all these services and manage the control and data flow, Quokka is best used in combination with workflows.
-A tutorial can be found [here](#running-a-workflow-based-quantum-application).
+
+A video demonstrating the use of Quokka can be found on [YouTube](https://www.youtube.com/watch?v=VQUz9Sj1r4M).
+
+A comprehensive step-by-step tutorial can be found [here](#running-a-workflow-based-quantum-application).
 
 ## Running Quokka
 
