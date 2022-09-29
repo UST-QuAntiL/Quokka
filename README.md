@@ -46,6 +46,8 @@ It is based on the [Camunda Modeler](https://camunda.com/platform/modeler/), a B
 
 To set up the QuantME MTF, clone the [repository](https://github.com/UST-QuAntiL/QuantME-TransformationFramework) and build the app in a Posix environment (i.e., use GitBash or WSL on Windows).
 
+[Nodejs v14](https://nodejs.org/en/blog/release/v14.17.3/) and [npm v8](https://www.npmjs.com/package/npm) are required for the installation.
+
 ```sh
 git clone https://github.com/UST-QuAntiL/QuantME-TransformationFramework.git
 cd  QuantME-TransformationFramework
