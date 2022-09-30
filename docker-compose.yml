@@ -60,7 +60,7 @@ services:
     networks:
       - quokka
   error-mitigation-service:
-    image: planqk/error-mitigation-service:v0.3.0
+    image: planqk/error-mitigation-service:latest
     command: app.py
     ports:
       - "5071:5071"
