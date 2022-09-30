@@ -21,7 +21,8 @@ A comprehensive step-by-step tutorial can be found [here](#running-a-workflow-ba
 The easiest way to get start with Quokka is using [Docker-Compose](https://docs.docker.com/compose/): 
 
 1. Clone the repository using ``git clone https://github.com/UST-QuAntiL/Quokka.git``
-2. Navigate to the repository and start it by running ``docker-compose up``
+2. Update the CamundaEndpoint in ``ip.env`` to ``http://YOUR_IP:8080/engine-rest``
+3. Navigate to the repository and start it by running ``docker-compose up``
 
 Afterwards, Quokka is available at [http://127.0.0.1:6474/](http://127.0.0.1:6474/)
 
