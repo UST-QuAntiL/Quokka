@@ -27,7 +27,7 @@ Then the service can be accessed via: [http://127.0.0.1:5075](http://127.0.0.1:5
 ## API Documentation
 
 The execution service provides a Swagger UI, specifying the request schemas and showcasing exemplary requests for all API endpoints.
- * Swagger UI: [http://127.0.0.1:5075/app/swagger-ui](http://127.0.0.1:5075/app/swagger-ui).
+ * Swagger UI: [http://127.0.0.1:5075/api/swagger-ui](http://127.0.0.1:5075/api/swagger-ui).
 
 ## Developer Guide
 
