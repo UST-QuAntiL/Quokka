@@ -16,7 +16,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 # ******************************************************************************
-
+import codecs
+import pickle
 import time
 import qiskit
 from flask import jsonify
@@ -30,62 +31,91 @@ from qiskit.providers.ibmq.exceptions import IBMQAccountCredentialsNotFound
 from qiskit.utils import circuit_utils
 from qiskit.utils.measurement_error_mitigation import get_measured_qubits
 
-
-def execute_circuit(input):
-    circuit = input.get("circuit")
-    provider = input.get("provider")
-    qpu = input.get("qpu")
-    credentials = input.get("credentials")
-    shots = input.get("shots")
-    noise_model = input.get("noise_model")
-    only_measurement_errors = input.get("only_measurement_errors")
+from app.model.execution_request import ExecutionRequest
+from app.model.execution_response import ExecutionResponse
 
 
-    if provider.lower() != 'ibm':
-        return 'This service currently only supports the execution of quantum circuits on IBMQ qpus'
+def execute_circuit(request: ExecutionRequest):
+    list_input = True
+    if isinstance(request.circuit, str):
+        request.circuit = [request.circuit]
+        list_input = False
 
-    # DEPRECATED: get qiskit circuit object from Json object containing the base64 encoded circuit
-    # quantum_circuit = pickle.loads(codecs.decode(circuit.encode(), "base64"))
-    try:
-        circuit = QuantumCircuit.from_qasm_str(circuit)
-    except:
-        return 'The quantum circuit has to be provided as an OpenQASM 2.0 String'
+    if request.provider != "ibm":
+        return "This service currently only supports the execution of quantum circuits on IBMQ qpus"
 
-    if noise_model:
-        noisy_qpu = get_qpu(credentials, noise_model)
+    circuits = []
+
+    for c in request.circuit:
+        # DEPRECATED: get qiskit circuit object from Json object containing the base64 encoded circuit
+        if request.circuit_format == "qiskit":
+            circuits.append(pickle.loads(codecs.decode(c.encode(), "base64")))
+        else:
+            try:
+                circuits.append(QuantumCircuit.from_qasm_str(c))
+            except:
+                return (
+                    "The quantum circuit has to be provided as an OpenQASM 2.0 String"
+                )
+
+    if request.noise_model:
+        noisy_qpu = get_qpu(request.credentials, request.noise_model)
         noise_model = NoiseModel.from_backend(noisy_qpu)
         properties = noisy_qpu.properties()
         configuration = noisy_qpu.configuration()
         coupling_map = configuration.coupling_map
         basis_gates = noise_model.basis_gates
-        transpiled_circuit = transpile(circuit, noisy_qpu)
-        measurement_qubits = get_measurement_qubits_from_transpiled_circuit(transpiled_circuit)
 
+        transpiled_circuits = [transpile(c, noisy_qpu) for c in circuits]
+        measurement_qubits = [
+            get_measurement_qubits_from_transpiled_circuit(c)
+            for c in transpiled_circuits
+        ]
 
-        if only_measurement_errors:
+        if request.only_measurement_errors:
             ro_noise_model = NoiseModel()
-            for k,v in noise_model._local_readout_errors.items():
+            for k, v in noise_model._local_readout_errors.items():
                 ro_noise_model.add_readout_error(v, k)
             noise_model = ro_noise_model
 
-
-
         backend = AerSimulator()
-        job = qiskit.execute(transpiled_circuit, backend=backend, coupling_map=coupling_map, basis_gates=basis_gates, noise_model=noise_model, shots=shots, optimization_level=0)
+        job = qiskit.execute(
+            transpiled_circuits,
+            backend=backend,
+            coupling_map=coupling_map,
+            basis_gates=basis_gates,
+            noise_model=noise_model,
+            shots=request.shots,
+            optimization_level=0,
+        )
         result_counts = job.result().get_counts()
+        if isinstance(result_counts, dict):
+            result_counts = [result_counts]
     else:
-        if 'simulator' in qpu:
+        if "simulator" in request.qpu:
             ibm_qpu = AerSimulator()
-            measurement_qubits = list(range(0, circuit.num_qubits))
-            transpiled_circuit = transpile(circuit, backend=ibm_qpu)
+            measurement_qubits = [list(range(0, c.num_qubits)) for c in circuits]
+            transpiled_circuits = [transpile(c, backend=ibm_qpu) for c in circuits]
         else:
-            ibm_qpu = get_qpu(credentials, qpu)
-            transpiled_circuit = transpile(circuit, backend=ibm_qpu)
-            measurement_qubits = get_measurement_qubits_from_transpiled_circuit(transpiled_circuit)
-        result_counts = execute(transpiled_circuit, shots, ibm_qpu)
-    transpiled_circuit_depth = transpiled_circuit.depth()
+            ibm_qpu = get_qpu(request.credentials, request.qpu)
+            transpiled_circuits = [transpile(c, backend=ibm_qpu) for c in circuits]
+            measurement_qubits = [
+                get_measurement_qubits_from_transpiled_circuit(c)
+                for c in transpiled_circuits
+            ]
+        result_counts = execute(transpiled_circuits, request.shots, ibm_qpu)
+        if isinstance(result_counts, dict):
+            result_counts = [result_counts]
+    transpiled_circuit_depths = [c.depth() for c in transpiled_circuits]
 
-    return jsonify({'counts': result_counts, 'meas_qubits': measurement_qubits, 'transpiled_circuit_depth': transpiled_circuit_depth})
+    return jsonify(
+        ExecutionResponse(
+            result_counts,
+            measurement_qubits,
+            transpiled_circuit_depths,
+            list_input=list_input,
+        ).to_json()
+    )
 
 
 def get_qpu(credentials, qpu):
@@ -100,7 +130,9 @@ def get_qpu(credentials, qpu):
             backend = provider.get_backend(qpu)
             return backend
     except (QiskitBackendNotFoundError, RequestsApiError):
-        print('Backend could not be retrieved. Backend name or credentials are invalid. Be sure to use the schema credentials: {"token": "YOUR_TOKEN", "hub": "YOUR_HUB", "group": "YOUR GROUP", "project": "YOUR_PROJECT"). Note that "ibm-q/open/main" are assumed as default values for "hub", "group", "project".')
+        print(
+            'Backend could not be retrieved. Backend name or credentials are invalid. Be sure to use the schema credentials: {"token": "YOUR_TOKEN", "hub": "YOUR_HUB", "group": "YOUR GROUP", "project": "YOUR_PROJECT"). Note that "ibm-q/open/main" are assumed as default values for "hub", "group", "project".'
+        )
         return None
 
 
@@ -120,6 +152,7 @@ def execute(transpiled_circuit, shots, backend):
         return job.result().get_counts()
     except (JobError, JobTimeoutError):
         return None
+
 
 def get_measurement_qubits_from_transpiled_circuit(transpiled_circuit):
     qubit_index, qubit_mappings = get_measured_qubits([transpiled_circuit])

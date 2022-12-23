@@ -21,7 +21,8 @@ from flask import Flask
 import logging
 from config import config
 from flask_smorest import Api
-from app.routes import blp
+from app.controller.routes import blp
+
 
 def create_app(config_name):
     app = Flask(__name__)
@@ -36,9 +37,6 @@ def create_app(config_name):
     def heartbeat():
         return '<h1>Quantum circuit executor is running</h1> <h3>View the API Docs <a href="/api/swagger-ui">here</a></h3>'
 
-    from app import routes
+    from app.controller import routes
 
     return app
-
-
-
