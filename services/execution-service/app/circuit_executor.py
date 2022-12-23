@@ -49,11 +49,14 @@ def execute_circuit(request: ExecutionRequest):
     for c in request.circuit:
         # DEPRECATED: get qiskit circuit object from Json object containing the base64 encoded circuit
         if request.circuit_format == "qiskit":
-            circuits.append(pickle.loads(codecs.decode(c.encode(), "base64")))
+            loaded_circ = (pickle.loads(codecs.decode(c.encode(), "base64")))
+            if request.parameters is not None:
+                loaded_circ = loaded_circ.bind_parameters(request.parameters)
+            circuits.append(loaded_circ)
         else:
             try:
                 circuits.append(QuantumCircuit.from_qasm_str(c))
-            except:
+            except Exception:
                 return (
                     "The quantum circuit has to be provided as an OpenQASM 2.0 String"
                 )

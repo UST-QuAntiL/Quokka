@@ -21,6 +21,7 @@ class ExecutionRequest:
         noise_model=None,
         only_measurement_errors=False,
         circuit_format="openqasm2",
+        parameters=None
     ):
         self.circuit = circuit
         self.provider = provider.lower()
@@ -30,6 +31,7 @@ class ExecutionRequest:
         self.noise_model = noise_model
         self.only_measurement_errors = only_measurement_errors
         self.circuit_format = circuit_format
+        self.parameters = parameters
 
 
 class ExecutionRequestSchema(ma.Schema):
@@ -43,3 +45,4 @@ class ExecutionRequestSchema(ma.Schema):
     noise_model = ma.fields.Str(required=False)
     only_measurement_errors = ma.fields.Boolean(required=False)
     circuit_format = ma.fields.Str(required=False)
+    parameters = ma.fields.List(ma.fields.Float(), required=False)

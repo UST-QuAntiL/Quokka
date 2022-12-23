@@ -85,7 +85,7 @@ services:
       - quokka
       
   execution-service:
-    image: planqk/execution-service:v0.1.0
+    image: planqk/execution-service:latest
     build: ./services/execution-service
     ports:
       - '5075:5075'
@@ -93,7 +93,7 @@ services:
       - quokka
       
   optimization-service:
-    image: planqk/optimization-service:v0.1.0
+    image: planqk/optimization-service:latest
     build: ./services/optimization-service
     ports:
       - '5074:5074'
