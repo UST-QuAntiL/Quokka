@@ -2,7 +2,7 @@ name: Push docker images to Dockerhub
 
 on:
   push:
-    branches: master
+    branches: main
     tags:
       - "v*.*.*"
 
@@ -32,7 +32,7 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       -
         name: Build and push Execution Service latest
-        if: ${{ steps.vars.outputs.tag }} == 'master'
+        if: ${{ steps.vars.outputs.tag }} == 'main'
         uses: docker/build-push-action@v2
         with:
           context: ./services/execution-service
@@ -41,7 +41,7 @@ jobs:
           tags: planqk/execution-service:latest
       -
         name: Build and push Execution Service version
-        if: ${{ steps.vars.outputs.tag }} != 'master'
+        if: ${{ steps.vars.outputs.tag }} != 'main'
         uses: docker/build-push-action@v2
         with:
           context: ./services/execution-service
@@ -50,7 +50,7 @@ jobs:
           tags: planqk/execution-service:${{ steps.vars.outputs.tag }}
       -
         name: Build and push Optimization Service latest
-        if: ${{ steps.vars.outputs.tag == 'master' }}
+        if: ${{ steps.vars.outputs.tag == 'main' }}
         uses: docker/build-push-action@v2
         with:
           context: ./services/optimization-service
@@ -59,7 +59,7 @@ jobs:
           tags: planqk/optimization-service:latest
       -
         name: Build and push Optimization Service version
-        if: ${{ steps.vars.outputs.tag != 'master' }}
+        if: ${{ steps.vars.outputs.tag != 'main' }}
         uses: docker/build-push-action@v2
         with:
           context: ./services/optimization-service
