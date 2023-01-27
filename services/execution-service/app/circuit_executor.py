@@ -51,7 +51,19 @@ def execute_circuit(request: ExecutionRequest):
         if request.circuit_format == "qiskit":
             loaded_circ = (pickle.loads(codecs.decode(c.encode(), "base64")))
             if request.parameters is not None:
-                loaded_circ = loaded_circ.bind_parameters(request.parameters)
+                if len(loaded_circ.parameters.data) != len(request.parameters):
+                    needed_params = []
+                    # for QAOA parameters, naming must be [beta0,beta1,..., gamma0, gamma1,...] TODO generalize once OPENQASM3 is released
+                    for param in loaded_circ.parameters.data:
+                        if "beta" in param.name:
+                            num = int(param.name[4:])
+                            needed_params.append(request.parameters[num])
+                        elif "gamma" in param.name:
+                            num = int(param.name[5:])
+                            needed_params.append(request.parameters[int(len(request.parameters)/2) + num])
+                    loaded_circ = loaded_circ.bind_parameters(needed_params)
+                else:
+                    loaded_circ = loaded_circ.bind_parameters(request.parameters)
             circuits.append(loaded_circ)
         else:
             try:

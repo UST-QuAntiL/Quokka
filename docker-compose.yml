@@ -115,9 +115,21 @@ services:
       - '5073:5073'
     networks:
       - quokka
+  circuit-cutting-service:
+    image: planqk/circuit-cutting-service:latest
+    ports:
+      - '5076:5076'
+    networks:
+      - quokka
+  warm-starting-service:
+    image: planqk/warm-starting-service:latest
+    ports:
+      - '5077:5077'
+    networks:
+      - quokka
 
   quokka-gateway:
-    image: planqk/quokka-gateway:0.1.0
+    image: planqk/quokka-gateway:0.2.0
     ports:
       - '6474:6474'
     networks:
