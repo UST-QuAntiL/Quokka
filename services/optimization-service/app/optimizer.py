@@ -24,21 +24,16 @@ from qiskit.algorithms.optimizers import SPSA
 import scipy.optimize as optimize
 from app import app
 import requests
-from urllib.request import urlopen
-import os
 
 class Optimizer (Process):
-    def __init__(self, topic, optimizer, parameters):
+    def __init__(self, topic, optimizer, parameters, endpoint):
         super().__init__()
         self.topic = topic
         self.optimizer = optimizer
         self.parameters = parameters
+        self.camundaEndpoint = endpoint
         self.return_address = None
-
-        self.camundaEndpoint = os.environ['CAMUNDA_ENDPOINT']
         print('endpoint', self.camundaEndpoint)
-        #self.camundaEndpoint = "http://localhost:8080/engine-rest"  # os.environ['CAMUNDA_ENDPOINT']
-
         self.pollingEndpoint = self.camundaEndpoint + '/external-task'
 
 

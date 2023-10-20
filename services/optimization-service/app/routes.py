@@ -16,8 +16,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 # ******************************************************************************
-import threading
-
+import os
 from app import app
 from flask import jsonify, abort, request
 from .optimizer import Optimizer
@@ -55,8 +54,14 @@ def execute_circuit():
     initialParameters = request.json['initialParameters']
     app.logger.info('initialParameters: ' + str(initialParameters))
 
+    if 'endpoint' not in request.json:
+        app.logger.info("endpoint not defined in request taking default from environment var")
+        endpoint = os.environ['CAMUNDA_ENDPOINT']
+    else:
+        endpoint = request.json['endpoint']
+    app.logger.info('endpoint: ' + str(endpoint))
 
-    process = Optimizer(topic, optimizer, initialParameters)
+    process = Optimizer(topic, optimizer, initialParameters, endpoint)
     process.start()
 
-    return jsonify('Optimization process for id {} started'.format(topic))
+    return jsonify('Optimization process for topic {} at endpoint {} started'.format(topic, endpoint))
