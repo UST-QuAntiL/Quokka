@@ -23,12 +23,11 @@ import qiskit
 from flask import jsonify
 from qiskit import IBMQ, transpile, assemble, QuantumCircuit
 from qiskit.providers import QiskitBackendNotFoundError, JobError, JobTimeoutError
-from qiskit.providers.aer import AerSimulator
-from qiskit.providers.aer.noise import NoiseModel
+from qiskit_aer.backends import AerSimulator
+from qiskit_aer.noise import NoiseModel
 from qiskit.providers.ibmq.api.exceptions import RequestsApiError
 from qiskit.providers.jobstatus import JOB_FINAL_STATES
 from qiskit.providers.ibmq.exceptions import IBMQAccountCredentialsNotFound
-from qiskit.utils import circuit_utils
 from qiskit.utils.measurement_error_mitigation import get_measured_qubits
 
 from app.model.execution_request import ExecutionRequest
