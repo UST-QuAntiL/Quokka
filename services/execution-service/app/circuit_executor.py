@@ -25,13 +25,12 @@ from qiskit import IBMQ, transpile, assemble, QuantumCircuit
 from qiskit.providers import QiskitBackendNotFoundError, JobError, JobTimeoutError
 from qiskit_aer.backends import AerSimulator
 from qiskit_aer.noise import NoiseModel
-from qiskit.providers.ibmq.api.exceptions import RequestsApiError
 from qiskit.providers.jobstatus import JOB_FINAL_STATES
-from qiskit.providers.ibmq.exceptions import IBMQAccountCredentialsNotFound
 from qiskit.utils.measurement_error_mitigation import get_measured_qubits
 
 from app.model.execution_request import ExecutionRequest
 from app.model.execution_response import ExecutionResponse
+from qiskit_ibm_provider import IBMProvider
 
 
 def execute_circuit(request: ExecutionRequest):
@@ -134,16 +133,12 @@ def execute_circuit(request: ExecutionRequest):
 
 def get_qpu(credentials, qpu):
     """Load account from token. Get backend."""
+    # TODO check if fixing breaking changes from qiskit modified the session storing of ibmq tokens
     try:
-        try:
-            IBMQ.disable_account()
-        except IBMQAccountCredentialsNotFound:
-            pass
-        finally:
-            provider = IBMQ.enable_account(**credentials)
-            backend = provider.get_backend(qpu)
-            return backend
-    except (QiskitBackendNotFoundError, RequestsApiError):
+        provider = IBMProvider(**credentials)
+        backend = provider.get_backend(qpu)
+        return backend
+    except (QiskitBackendNotFoundError, Exception):
         print(
             'Backend could not be retrieved. Backend name or credentials are invalid. Be sure to use the schema credentials: {"token": "YOUR_TOKEN", "hub": "YOUR_HUB", "group": "YOUR GROUP", "project": "YOUR_PROJECT"). Note that "ibm-q/open/main" are assumed as default values for "hub", "group", "project".'
         )
