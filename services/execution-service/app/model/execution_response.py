@@ -11,13 +11,14 @@ class ResultsField(fields.Field):
 
 
 class ExecutionResponse:
-    def __init__(self, counts, meas_qubits, transpiled_circuit_depth, list_input):
+    def __init__(self, counts, meas_qubits, transpiled_circuit_depth, list_input, visualization = ""):
         super().__init__()
         self.counts = counts if list_input else counts[0]
         self.meas_qubits = meas_qubits if list_input else meas_qubits[0]
         self.transpiled_circuit_depth = (
             transpiled_circuit_depth if list_input else transpiled_circuit_depth[0]
         )
+        self.visualization = visualization
 
     def to_json(self):
         if isinstance(self.transpiled_circuit_depth, list):
@@ -28,6 +29,7 @@ class ExecutionResponse:
                         "counts": self.counts[i],
                         "meas_qubits": self.meas_qubits[i],
                         "transpiled_circuit_depth": self.transpiled_circuit_depth[i],
+                        "visualization": self.visualization,
                     }
                 )
         else:
@@ -35,6 +37,7 @@ class ExecutionResponse:
                 "counts": self.counts,
                 "meas_qubits": self.meas_qubits,
                 "transpiled_circuit_depth": self.transpiled_circuit_depth,
+                "visualization": self.visualization,
             }
         return json_execution_response
 
@@ -43,3 +46,4 @@ class ExecutionResponseSchema(ma.Schema):
     counts = ResultsField()
     meas_qubits = ma.fields.List(ma.fields.Int())
     transpiled_circuit_depth = ma.fields.Int()
+    visualization = ma.fields.String()

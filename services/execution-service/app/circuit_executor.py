@@ -23,6 +23,7 @@ import qiskit
 from flask import jsonify
 from qiskit import IBMQ, transpile, assemble, QuantumCircuit
 from qiskit.providers import QiskitBackendNotFoundError, JobError, JobTimeoutError
+from qiskit.visualization import plot_distribution
 from qiskit_aer.backends import AerSimulator
 from qiskit_aer.noise import NoiseModel
 from qiskit.providers.jobstatus import JOB_FINAL_STATES
@@ -121,6 +122,28 @@ def execute_circuit(request: ExecutionRequest):
             result_counts = [result_counts]
     transpiled_circuit_depths = [c.depth() for c in transpiled_circuits]
 
+    # Generate visualization of probablity distribution if only a single circuit was executed
+    if len(result_counts) < 2:
+        counts = result_counts[0]
+        maxNumberOfPlottedValues = 2**6
+        if len(counts.keys()) > maxNumberOfPlottedValues:
+            unusedCounts = dict(sorted(counts.items(), key=lambda x:x[1], reverse=True)[maxNumberOfPlottedValues:len(counts.keys())])
+            totalFrequencyOfUnused = sum(unusedCounts.values())
+            counts = dict(sorted(counts.items(), key=lambda x:x[1], reverse=True)[0:maxNumberOfPlottedValues])
+            counts['combinedLowProbabilities'] = totalFrequencyOfUnused
+
+        plot = plot_distribution(counts, sort='value_desc')
+        return jsonify(
+            ExecutionResponse(
+                result_counts,
+                measurement_qubits,
+                transpiled_circuit_depths,
+                list_input=list_input,
+                visualization=figure_to_base64(plot)
+            ).to_json()
+        )
+
+
     return jsonify(
         ExecutionResponse(
             result_counts,
@@ -168,3 +191,16 @@ def get_measurement_qubits_from_transpiled_circuit(transpiled_circuit):
     measurement_qubits = [int(i) for i in list(qubit_mappings.keys())[0].split("_")]
 
     return measurement_qubits
+
+def figure_to_base64(fig):
+    import matplotlib.pyplot as plt
+    import io
+    import base64
+
+    my_stringIObytes = io.BytesIO()
+    plt.savefig(my_stringIObytes, format="png", bbox_inches="tight")
+    my_stringIObytes.seek(0)
+    my_base64_jpgData = base64.b64encode(my_stringIObytes.read()).decode("utf-8")
+    plt.savefig("temp_visualized.png", format="png", bbox_inches="tight")
+    plt.close(fig)
+    return my_base64_jpgData
