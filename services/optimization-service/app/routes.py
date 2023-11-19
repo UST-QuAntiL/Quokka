@@ -57,6 +57,8 @@ def execute_circuit():
     if 'endpoint' not in request.json:
         app.logger.info("endpoint not defined in request taking default from environment var")
         endpoint = os.environ['CAMUNDA_ENDPOINT']
+        if endpoint == None:
+            endpoint = "x";
     else:
         endpoint = request.json['endpoint']
     app.logger.info('endpoint: ' + str(endpoint))

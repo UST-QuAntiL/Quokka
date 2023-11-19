@@ -25,6 +25,8 @@ import scipy.optimize as optimize
 from app import app
 import requests
 
+from .plot import visualizeOptimizationLandscape, figure_to_base64
+
 class Optimizer (Process):
     def __init__(self, topic, optimizer, parameters, endpoint):
         super().__init__()
@@ -35,6 +37,7 @@ class Optimizer (Process):
         self.return_address = None
         print('endpoint', self.camundaEndpoint)
         self.pollingEndpoint = self.camundaEndpoint + '/external-task'
+        self.optimizationHistory = []
 
 
     def run(self):
@@ -47,18 +50,34 @@ class Optimizer (Process):
 
             opt_parameters = fix_parameters_list(opt_parameters)
 
+            optimization_landscape = "Optimization landscapes are currently only available for optimization processes with 2 optimization parameters"
+            if len(self.optimizationHistory) > 0 and len(self.optimizationHistory[0]["params"]) == 2:
+                optimization_landscape = visualizeOptimizationLandscape(self.optimizationHistory)
+
             # send response
-            body = {
-                "workerId": "optimization-service",
-                "variables":
-                    {"optimizedParameters": {"value": str(opt_parameters), "type": "String"}}
-            }
+            if optimization_landscape == "Optimization landscapes are currently only available for optimization processes with 2 optimization parameters":
+                body = {
+                    "workerId": "optimization-service",
+                    "variables":
+                        {"optimizedParameters": {"value": str(opt_parameters), "type": "String"},
+                         "optimizationHistory": {"value": str(self.optimizationHistory), "type": "String"}}
+                }
+            else:
+                body = {
+                    "workerId": "optimization-service",
+                    "variables":
+                        {"optimizedParameters": {"value": str(opt_parameters), "type": "String"},
+                         "optimizationHistory": {"value": str(self.optimizationHistory), "type": "String"},
+                         "optimizationLandscape": {"value": optimization_landscape, "type": "File", "valueInfo": {"filename": "optimizationLandscape.png", "mimetype":"application/png", "encoding":"base64"}}}
+                }
             if self.return_address:
                 app.logger.info(self.pollingEndpoint + '/' + self.return_address + '/complete' + ' body: ' + str(body))
                 response = requests.post(self.pollingEndpoint + '/' + self.return_address + '/complete',
                                      json=body)
                 app.logger.info(response)
-            return self.poll()
+            returned_objective_value = self.poll()
+            self.optimizationHistory.append({"obj_value": returned_objective_value, "params": opt_parameters})
+            return returned_objective_value
 
 
         if self.optimizer.lower() == 'spsa':
