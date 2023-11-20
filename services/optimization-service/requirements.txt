@@ -5,3 +5,4 @@ urllib3==1.26.9
 Werkzeug==2.1.2
 qiskit==0.36.2
 matplotlib==3.8.0
+numpy==1.26.2
