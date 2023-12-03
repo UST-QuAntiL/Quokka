@@ -5,6 +5,7 @@ import base64
 import numpy as np
 
 def visualizeOptimizationLandscape(optimization_path, show=False):
+    print(optimization_path);
     xs, ys, vals = np.array([]), np.array([]), np.array([])
     for k in range(len(optimization_path)):
         xs = np.append(xs, optimization_path[k]["params"][0])
@@ -54,7 +55,7 @@ def visualizeOptimizationLandscape(optimization_path, show=False):
 
     # add the color bar
     fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap),
-                 cax=cbar_ax, orientation='horizontal', label='Objective Value')
+                 cax=ax_cbar, orientation='horizontal', label='Objective Value')
 
     # plot the optimization progress
     ax_progress.plot(vals)
