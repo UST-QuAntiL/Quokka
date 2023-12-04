@@ -51,7 +51,7 @@ class Optimizer (Process):
             opt_parameters = fix_parameters_list(opt_parameters)
 
             optimization_landscape = "Optimization landscapes are currently only available for optimization processes with 2 optimization parameters"
-            if len(self.optimizationHistory) > 0 and len(self.optimizationHistory[0]["params"]) == 2:
+            if len(self.optimizationHistory) > 1 and len(self.optimizationHistory[0]["params"]) == 2:
                 optimization_landscape = visualizeOptimizationLandscape(self.optimizationHistory)
 
             # send response
