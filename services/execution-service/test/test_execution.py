@@ -2,6 +2,8 @@ import unittest
 import os, sys
 import json
 
+import utils_test
+
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 from app import create_app
@@ -28,7 +30,7 @@ class FlaskClientTestCase(unittest.TestCase):
                     "qpu": "aer_qasm_simulator",
                     "credentials": {"token": token},
                     "shots": 1000,
-                    "noise_model": "ibm_lagos",
+                    "noise_model": "ibm_osaka",
                 }
             ),
             content_type="application/json",
@@ -38,6 +40,8 @@ class FlaskClientTestCase(unittest.TestCase):
 
     def test_noisy_simulator_multicircuit(self):
         token = os.environ["IBMQ_TOKEN"]
+        credentials = {"token": token}
+        backend = utils_test.get_available_qpu(credentials)
         response = self.client.post(
             "/execution-service",
             data=json.dumps(
@@ -48,9 +52,9 @@ class FlaskClientTestCase(unittest.TestCase):
                     ],
                     "provider": "IBM",
                     "qpu": "aer_qasm_simulator",
-                    "credentials": {"token": token},
+                    "credentials": credentials,
                     "shots": 1000,
-                    "noise_model": "ibm_lagos",
+                    "noise_model": backend,
                 }
             ),
             content_type="application/json",
@@ -147,6 +151,8 @@ class FlaskClientTestCase(unittest.TestCase):
 
     def test_noisy_measurement_simulator(self):
         token = os.environ["IBMQ_TOKEN"]
+        credentials = {"token": token}
+        backend = utils_test.get_available_qpu(credentials)
         response = self.client.post(
             "/execution-service",
             data=json.dumps(
@@ -154,9 +160,9 @@ class FlaskClientTestCase(unittest.TestCase):
                     "circuit": 'OPENQASM 2.0; include "qelib1.inc";qreg q[4];creg c[4];x q[0]; x q[2];barrier q;h q[0];cu1(pi/2) q[1],q[0];h q[1];cu1(pi/4) q[2],q[0];cu1(pi/2) q[2],q[1];h q[2];cu1(pi/8) q[3],q[0];cu1(pi/4) q[3],q[1];cu1(pi/2) q[3],q[2];h q[3];measure q -> c;',
                     "provider": "IBM",
                     "qpu": "aer_qasm_simulator",
-                    "credentials": {"token": token},
+                    "credentials": credentials,
                     "shots": 1000,
-                    "noise_model": "ibm_lagos",
+                    "noise_model": backend,
                     "only_measurement_errors": "True",
                 }
             ),
