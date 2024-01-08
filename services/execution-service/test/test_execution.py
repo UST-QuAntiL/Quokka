@@ -2,7 +2,8 @@ import unittest
 import os, sys
 import json
 
-import utils_test
+from test.utils_test import get_available_qpu
+
 
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
@@ -41,7 +42,7 @@ class FlaskClientTestCase(unittest.TestCase):
     def test_noisy_simulator_multicircuit(self):
         token = os.environ["IBMQ_TOKEN"]
         credentials = {"token": token}
-        backend = utils_test.get_available_qpu(credentials)
+        backend = get_available_qpu(credentials)
         response = self.client.post(
             "/execution-service",
             data=json.dumps(
@@ -152,7 +153,7 @@ class FlaskClientTestCase(unittest.TestCase):
     def test_noisy_measurement_simulator(self):
         token = os.environ["IBMQ_TOKEN"]
         credentials = {"token": token}
-        backend = utils_test.get_available_qpu(credentials)
+        backend = get_available_qpu(credentials)
         response = self.client.post(
             "/execution-service",
             data=json.dumps(
