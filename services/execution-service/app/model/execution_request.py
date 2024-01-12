@@ -30,7 +30,7 @@ class ExecutionRequest:
         self.shots = shots
         self.noise_model = noise_model
         self.only_measurement_errors = only_measurement_errors
-        self.circuit_format = circuit_format
+        self.circuit_format = circuit_format.lower()
         self.parameters = parameters
 
 

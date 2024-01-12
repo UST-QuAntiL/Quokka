@@ -28,6 +28,7 @@ from qiskit_aer.backends import AerSimulator
 from qiskit_aer.noise import NoiseModel
 from qiskit.providers.jobstatus import JOB_FINAL_STATES
 from qiskit.utils.measurement_error_mitigation import get_measured_qubits
+from qiskit import qasm3
 
 from app.model.execution_request import ExecutionRequest
 from app.model.execution_response import ExecutionResponse
@@ -41,7 +42,7 @@ def execute_circuit(request: ExecutionRequest):
         list_input = False
 
     if request.provider != "ibm":
-        return "This service currently only supports the execution of quantum circuits on IBMQ qpus"
+        return "Provider must be 'ibm' as this service currently only supports the execution of quantum circuits on IBMQ qpus"
 
     circuits = []
 
@@ -64,6 +65,17 @@ def execute_circuit(request: ExecutionRequest):
                 else:
                     loaded_circ = loaded_circ.bind_parameters(request.parameters)
             circuits.append(loaded_circ)
+        elif request.circuit_format == "openqasm3":
+            loaded_circ = qasm3.loads(c)
+            if len(loaded_circ.parameters.data) == 0:
+                circuits.append(loaded_circ)
+            else:
+                required_params = loaded_circ.parameters.data
+                for param in required_params:
+                    # TODO ONCE OPENQASM3 IMPORTS WORK PROPERLY PARAMS MUST BE CHANGED FROM LIST TO DICT
+                    loaded_circ.assign_parameters({param: required_params[param]})
+
+            print(loaded_circ)
         else:
             try:
                 circuits.append(QuantumCircuit.from_qasm_str(c))
