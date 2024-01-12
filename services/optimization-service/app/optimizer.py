@@ -51,11 +51,12 @@ class Optimizer (Process):
             opt_parameters = fix_parameters_list(opt_parameters)
 
             optimization_landscape = "Optimization landscapes are currently only available for optimization processes with 2 optimization parameters"
-            if len(self.optimizationHistory) > 0 and len(self.optimizationHistory[0]["params"]) == 2:
+            if len(self.optimizationHistory) > 1 and len(self.optimizationHistory[0]["params"]) == 2:
                 optimization_landscape = visualizeOptimizationLandscape(self.optimizationHistory)
 
             # send response
             if optimization_landscape == "Optimization landscapes are currently only available for optimization processes with 2 optimization parameters":
+                print("sending response without visualization")
                 body = {
                     "workerId": "optimization-service",
                     "variables":
@@ -63,6 +64,7 @@ class Optimizer (Process):
                          "optimizationHistory": {"value": str(self.optimizationHistory), "type": "String"}}
                 }
             else:
+                print("sending response with visualization")
                 body = {
                     "workerId": "optimization-service",
                     "variables":
@@ -70,6 +72,7 @@ class Optimizer (Process):
                          "optimizationHistory": {"value": str(self.optimizationHistory), "type": "String"},
                          "optimizationLandscape": {"value": optimization_landscape, "type": "File", "valueInfo": {"filename": "optimizationLandscape.png", "mimetype":"application/png", "encoding":"base64"}}}
                 }
+            print("returning optimizationhistory")
             if self.return_address:
                 app.logger.info(self.pollingEndpoint + '/' + self.return_address + '/complete' + ' body: ' + str(body))
                 response = requests.post(self.pollingEndpoint + '/' + self.return_address + '/complete',
