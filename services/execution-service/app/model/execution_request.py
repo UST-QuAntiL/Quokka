@@ -9,6 +9,13 @@ class CircuitField(fields.Field):
         else:
             raise ValidationError("Field should be str or list")
 
+class Parameters(fields.Field):
+    def _deserialize(self, value, attr, data, **kwargs):
+        if isinstance(value, dict) or isinstance(value, list):
+            return value
+        else:
+            raise ValidationError("Field should be dict or list")
+
 
 class ExecutionRequest:
     def __init__(
@@ -45,4 +52,4 @@ class ExecutionRequestSchema(ma.Schema):
     noise_model = ma.fields.Str(required=False)
     only_measurement_errors = ma.fields.Boolean(required=False)
     circuit_format = ma.fields.Str(required=False)
-    parameters = ma.fields.List(ma.fields.Float(), required=False)
+    parameters = Parameters(required=False)

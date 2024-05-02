@@ -7,6 +7,6 @@ Werkzeug==2.1.2
 flask-smorest==0.39.0
 symengine==0.9.2
 qiskit_aer==0.12.2
-qiskit_ibm_provider==0.7.1
+qiskit_ibm_provider==0.7.2
 matplotlib==3.7.0
 qiskit_qasm3_import~=0.3.0

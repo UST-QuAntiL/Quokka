@@ -73,9 +73,8 @@ def execute_circuit(request: ExecutionRequest):
                 required_params = loaded_circ.parameters.data
                 for param in required_params:
                     # TODO ONCE OPENQASM3 IMPORTS WORK PROPERLY PARAMS MUST BE CHANGED FROM LIST TO DICT
-                    loaded_circ.assign_parameters({param: required_params[param]})
-
-            print(loaded_circ)
+                    loaded_circ = loaded_circ.assign_parameters({param: request.parameters[param.name]})
+                circuits.append(loaded_circ)
         else:
             try:
                 circuits.append(QuantumCircuit.from_qasm_str(c))
@@ -180,10 +179,10 @@ def get_qpu(credentials, qpu):
         return None
 
 
-def execute(transpiled_circuit, shots, backend):
+def execute(transpiled_circuits, shots, backend):
     """Execute the quantum circuit."""
     try:
-        job = backend.run(assemble(transpiled_circuit, shots=shots))
+        job = backend.run(assemble(transpiled_circuits, shots=shots))
         sleep_timer = 0.5
         job_status = job.status()
         while job_status not in JOB_FINAL_STATES:
