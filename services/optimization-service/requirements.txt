@@ -3,6 +3,5 @@ Flask-RESTful==0.3.9
 requests==2.28.0
 urllib3==1.26.9
 Werkzeug==2.1.2
-qiskit==0.36.2
 matplotlib==3.7.0
 numpy==1.22.0

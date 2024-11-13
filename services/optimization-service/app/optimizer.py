@@ -20,7 +20,6 @@
 
 import time
 from multiprocessing import Process
-from qiskit.algorithms.optimizers import SPSA
 import scipy.optimize as optimize
 from app import app
 import requests
@@ -82,12 +81,6 @@ class Optimizer (Process):
             self.optimizationHistory.append({"obj_value": returned_objective_value, "params": opt_parameters})
             return returned_objective_value
 
-
-        if self.optimizer.lower() == 'spsa':
-            spsa = SPSA(maxiter=200)
-            res = spsa.optimize(len(self.parameters), decoyfunction, initial_point=self.parameters)
-            final_parameters = res #TODO check SPSA result
-        else:
             res = optimize.minimize(decoyfunction, self.parameters, method=self.optimizer)
             final_parameters = fix_parameters_list(res.x)
         print(res)
