@@ -11,6 +11,7 @@ Thus, Quokka provides the following functionalities as services via a single End
 5. [Optimization](./services/optimization-service)
 6. [Circuit Cutting Service](https://github.com/UST-QuAntiL/circuit-cutting-service)
 7. [Warm-Starting Service](https://github.com/UST-QuAntiL/warm-starting-service)
+8. [Visualization Service](https://github.com/UST-QuAntiL/visualization-service)
 
 To integrate all these services and manage the control and data flow, Quokka is best used in combination with workflows.
 
