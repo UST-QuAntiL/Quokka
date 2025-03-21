@@ -1,0 +1,193 @@
+{
+  "info": {
+    "description": "This is the API Specification of the Quantum Circuit Execution Service.",
+    "title": "Quantum Execution Service API",
+    "version": "0.1"
+  },
+  "license": {
+    "name": "Apache v2 License"
+  },
+  "paths": {
+    "/execution-service": {
+      "post": {
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExecutionResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExecutionRequest"
+              },
+              "example": {
+                "circuit": "OPENQASM 2.0; include \"qelib1.inc\"; qreg q[4]; creg c[4];x q[0]; x q[2];barrier q;h q[0];cu1(pi/2) q[1],q[0];h q[1];cu1(pi/4) q[2],q[0];cu1(pi/2) q[2],q[1];h q[2];cu1(pi/8) q[3],q[0];cu1(pi/4) q[3],q[1];cu1(pi/2) q[3],q[2];h q[3];measure q -> c;",
+                "provider": "IBM",
+                "qpu": "aer_qasm_simulator",
+                "credentials": {
+                  "token": "YOUR TOKEN"
+                },
+                "shots": 1000,
+                "circuit_format": "openqasm2"
+              }
+            }
+          }
+        },
+        "summary": "Execute a given quantum circuit on a specified quantum computer.",
+        "tags": [
+          "objective"
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "objective",
+      "description": "compute objective value from counts"
+    }
+  ],
+  "openapi": "3.0.2",
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Error code"
+          },
+          "status": {
+            "type": "string",
+            "description": "Error name"
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message"
+          },
+          "errors": {
+            "type": "object",
+            "description": "Errors"
+          }
+        }
+      },
+      "PaginationMetadata": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer"
+          },
+          "total_pages": {
+            "type": "integer"
+          },
+          "first_page": {
+            "type": "integer"
+          },
+          "last_page": {
+            "type": "integer"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "previous_page": {
+            "type": "integer"
+          },
+          "next_page": {
+            "type": "integer"
+          }
+        }
+      },
+      "ExecutionRequest": {
+        "type": "object",
+        "properties": {
+          "circuit": {},
+          "provider": {
+            "type": "string"
+          },
+          "qpu": {
+            "type": "string"
+          },
+          "credentials": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "shots": {
+            "type": "integer"
+          },
+          "noise_model": {
+            "type": "string"
+          },
+          "only_measurement_errors": {
+            "type": "boolean"
+          },
+          "circuit_format": {
+            "type": "string"
+          },
+          "parameters": {}
+        },
+        "required": [
+          "circuit",
+          "credentials",
+          "provider",
+          "qpu"
+        ]
+      },
+      "ExecutionResponse": {
+        "type": "object",
+        "properties": {
+          "counts": {},
+          "meas_qubits": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "transpiled_circuit_depth": {
+            "type": "integer"
+          },
+          "visualization": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "responses": {
+      "UNPROCESSABLE_ENTITY": {
+        "description": "Unprocessable Entity",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "DEFAULT_ERROR": {
+        "description": "Default error response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  }
+}

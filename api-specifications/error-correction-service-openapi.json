@@ -1,0 +1,165 @@
+{
+  "info": {
+    "description": "This is the API Specification of the Error Correction Service.",
+    "title": "Error Correction Service API",
+    "version": "0.1"
+  },
+  "license": {
+    "name": "Apache v2 License"
+  },
+  "paths": {
+    "/applyECC": {
+      "post": {
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplyECCResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "requestBody": {
+          "description": "Q3Shor, Q5Laflamme, Q7Steane, Q9Shor, Q9Surface, and Q18Surface are currently supported ECC codes (Details here: https://mqt.readthedocs.io/projects/qecc/en/latest/EccFramework.html)",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplyECCRequest"
+              },
+              "example": {
+                "circuit": "OPENQASM 2.0;\ninclude \"qelib1.inc\";qreg q[2];\ncreg c[2];\nh q[0];\ncx q[0], q[1];\n",
+                "errorCorrectionCode": "Q7Steane",
+                "eccFrequency": "20"
+              }
+            }
+          }
+        },
+        "summary": "Apply Error Correction Codes.",
+        "tags": [
+          "error-correction"
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "error-correction",
+      "description": "Error Correction for quantum circuits"
+    }
+  ],
+  "openapi": "3.0.2",
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Error code"
+          },
+          "errors": {
+            "type": "object",
+            "description": "Errors"
+          },
+          "status": {
+            "type": "string",
+            "description": "Error name"
+          }
+        }
+      },
+      "PaginationMetadata": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer"
+          },
+          "total_pages": {
+            "type": "integer"
+          },
+          "first_page": {
+            "type": "integer"
+          },
+          "last_page": {
+            "type": "integer"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "previous_page": {
+            "type": "integer"
+          },
+          "next_page": {
+            "type": "integer"
+          }
+        }
+      },
+      "ApplyECCRequest": {
+        "type": "object",
+        "properties": {
+          "eccFrequency": {
+            "type": "integer"
+          },
+          "errorCorrectionCode": {
+            "type": "string"
+          },
+          "circuitFormat": {
+            "type": "string"
+          },
+          "circuit": {}
+        },
+        "required": [
+          "circuit",
+          "errorCorrectionCode"
+        ]
+      },
+      "ApplyECCResponse": {
+        "type": "object",
+        "properties": {
+          "circuit_width": {
+            "type": "integer"
+          },
+          "circuit_depth": {
+            "type": "integer"
+          },
+          "circuit": {}
+        }
+      }
+    },
+    "responses": {
+      "UNPROCESSABLE_ENTITY": {
+        "description": "Unprocessable Entity",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "DEFAULT_ERROR": {
+        "description": "Default error response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  }
+}

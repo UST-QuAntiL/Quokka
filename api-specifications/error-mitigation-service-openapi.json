@@ -1,0 +1,641 @@
+{
+  "info": {
+    "description": "This is the API Specification of the Readout Error Mitigation Service",
+    "title": "Readout Error Mitigation Service API",
+    "version": "0.1"
+  },
+  "license": {
+    "name": "Apache v2 License"
+  },
+  "paths": {
+    "/cm/": {
+      "post": {
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CMGenRequest"
+              },
+              "example": {
+                "provider": "IBM",
+                "qpu": "aer_qasm_simulator",
+                "credentials": {
+                  "token": "YOUR_TOKEN"
+                },
+                "qubits": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4
+                ],
+                "cm_gen_method": "standard",
+                "shots": 1000,
+                "noise_model": "ibmq_lima",
+                "only_measurement_errors": false
+              }
+            }
+          }
+        },
+        "tags": [
+          "Calibration Matrix"
+        ]
+      },
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "qpu",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "aer_qasm_simulator"
+            }
+          },
+          {
+            "in": "query",
+            "name": "max_age",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 360
+            }
+          },
+          {
+            "in": "query",
+            "name": "cm_gen_method",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "standard"
+            }
+          },
+          {
+            "in": "query",
+            "name": "noise_model",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "ibmq_lima"
+            }
+          },
+          {
+            "in": "query",
+            "name": "qubits",
+            "required": true,
+            "explode": true,
+            "style": "form",
+            "schema": {
+              "type": "array",
+              "example": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ],
+              "items": {
+                "type": "integer"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "only_measurement_errors",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "example": false
+            }
+          }
+        ],
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "Calibration Matrix"
+        ]
+      }
+    },
+    "/cm/fromCounts": {
+      "post": {
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CMGenFromCountsRequest"
+              },
+              "example": {
+                "counts": [
+                  {
+                    "0": 990,
+                    "1": 10
+                  },
+                  {
+                    "0": 30,
+                    "1": 970
+                  }
+                ],
+                "qpu": "ibmq_lima",
+                "cm_gen_method": "standard",
+                "qubits": [
+                  0
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "Calibration Matrix"
+        ]
+      }
+    },
+    "/rem/": {
+      "post": {
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/REMRequest"
+              },
+              "example": {
+                "provider": "ibm",
+                "qpu": "aer_qasm_simulator",
+                "noise_model": "ibmq_lima",
+                "only_measurement_errors": "False",
+                "credentials": {
+                  "token": "YOUR_TOKEN"
+                },
+                "cm_gen_method": "standard",
+                "mitigation_method": "inversion",
+                "counts": {
+                  "10000": 112,
+                  "10001": 25,
+                  "10010": 631,
+                  "10011": 111,
+                  "10100": 615,
+                  "10101": 132,
+                  "10110": 2965,
+                  "10111": 604,
+                  "11000": 19,
+                  "11001": 3,
+                  "11010": 110,
+                  "11011": 23,
+                  "11100": 113,
+                  "11101": 32,
+                  "11110": 571,
+                  "11111": 119,
+                  "01000": 10,
+                  "00001": 4,
+                  "01101": 10,
+                  "00101": 30,
+                  "01011": 11,
+                  "00000": 40,
+                  "01110": 209,
+                  "01010": 45,
+                  "00010": 197,
+                  "00110": 951,
+                  "00100": 194,
+                  "00011": 38,
+                  "00111": 190,
+                  "01111": 41,
+                  "01100": 37
+                },
+                "shots": 1000,
+                "qubits": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4
+                ],
+                "max_age": 0
+              }
+            }
+          }
+        },
+        "tags": [
+          "rem"
+        ]
+      }
+    },
+    "/mm/": {
+      "post": {
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MMGenRequest"
+              },
+              "example": {
+                "provider": "IBM",
+                "qpu": "aer_qasm_simulator",
+                "credentials": {
+                  "token": "YOUR_TOKEN"
+                },
+                "qubits": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4
+                ],
+                "cm_gen_method": "standard",
+                "mitigation_method": "inversion",
+                "shots": 1000,
+                "noise_model": "ibmq_lima",
+                "only_measurement_errors": "True"
+              }
+            }
+          }
+        },
+        "tags": [
+          "mm"
+        ]
+      },
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "qpu",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "aer_qasm_simulator"
+            }
+          },
+          {
+            "in": "query",
+            "name": "max_age",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 360
+            }
+          },
+          {
+            "in": "query",
+            "name": "cm_gen_method",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "standard"
+            }
+          },
+          {
+            "in": "query",
+            "name": "mitigation_method",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "inversion"
+            }
+          },
+          {
+            "in": "query",
+            "name": "noise_model",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "ibmq_lima"
+            }
+          },
+          {
+            "in": "query",
+            "name": "qubits",
+            "required": true,
+            "explode": true,
+            "style": "form",
+            "schema": {
+              "type": "array",
+              "example": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ],
+              "items": {
+                "type": "integer"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "only_measurement_errors",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "example": false
+            }
+          }
+        ],
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "mm"
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Calibration Matrix",
+      "description": "Generate and Request Calibration Matrices"
+    },
+    {
+      "name": "rem",
+      "description": "mitigate a circuit execution result"
+    },
+    {
+      "name": "mm",
+      "description": "Generate and Request Mitigation Matrices"
+    }
+  ],
+  "openapi": "3.0.2",
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Error name"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Error code"
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message"
+          },
+          "errors": {
+            "type": "object",
+            "description": "Errors"
+          }
+        }
+      },
+      "PaginationMetadata": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer"
+          },
+          "total_pages": {
+            "type": "integer"
+          },
+          "first_page": {
+            "type": "integer"
+          },
+          "last_page": {
+            "type": "integer"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "previous_page": {
+            "type": "integer"
+          },
+          "next_page": {
+            "type": "integer"
+          }
+        }
+      },
+      "CMGenRequest": {
+        "type": "object",
+        "properties": {
+          "qpu": {
+            "type": "string"
+          },
+          "shots": {
+            "type": "integer"
+          },
+          "cm_gen_method": {
+            "type": "string"
+          },
+          "noise_model": {
+            "type": "string"
+          },
+          "credentials": {},
+          "qubits": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "only_measurement_errors": {
+            "type": "boolean"
+          },
+          "provider": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "cm_gen_method",
+          "credentials",
+          "provider",
+          "qpu",
+          "qubits"
+        ]
+      },
+      "CMGenFromCountsRequest": {
+        "type": "object",
+        "properties": {
+          "qubits": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "cm_gen_method": {
+            "type": "string"
+          },
+          "counts": {},
+          "qpu": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "cm_gen_method",
+          "qpu",
+          "qubits"
+        ]
+      },
+      "REMRequest": {
+        "type": "object",
+        "properties": {
+          "time_of_execution": {
+            "type": "string",
+            "format": "date-time",
+            "description": "format:Y-m-d_H-M-S"
+          },
+          "qpu": {
+            "type": "string"
+          },
+          "max_age": {
+            "type": "integer"
+          },
+          "shots": {
+            "type": "integer"
+          },
+          "mitigation_method": {
+            "type": "string"
+          },
+          "cm_gen_method": {
+            "type": "string"
+          },
+          "counts": {},
+          "noise_model": {
+            "type": "string"
+          },
+          "credentials": {
+            "description": "Dictionary containing all required credentials"
+          },
+          "qubits": {},
+          "only_measurement_errors": {
+            "type": "boolean"
+          },
+          "provider": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "counts",
+          "qpu",
+          "qubits"
+        ]
+      },
+      "MMGenRequest": {
+        "type": "object",
+        "properties": {
+          "qpu": {
+            "type": "string"
+          },
+          "shots": {
+            "type": "integer"
+          },
+          "max_age": {
+            "type": "integer"
+          },
+          "mitigation_method": {
+            "type": "string"
+          },
+          "cm_gen_method": {
+            "type": "string"
+          },
+          "noise_model": {
+            "type": "string"
+          },
+          "credentials": {},
+          "qubits": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "only_measurement_errors": {
+            "type": "boolean"
+          },
+          "provider": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "credentials",
+          "mitigation_method",
+          "provider",
+          "qpu",
+          "qubits"
+        ]
+      }
+    },
+    "responses": {
+      "UNPROCESSABLE_ENTITY": {
+        "description": "Unprocessable Entity",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "DEFAULT_ERROR": {
+        "description": "Default error response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  }
+}

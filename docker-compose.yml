@@ -21,7 +21,7 @@ services:
   ### Error-Mitigation Service ###
   minio1:
     image: quay.io/minio/minio:RELEASE.2022-01-27T03-53-02Z
-    command: server --console-address ":9001"  http://minio{1...2}/data{1...2} 
+    command: server --console-address ":9001"  http://minio{1...2}/data{1...2}
     expose:
     - "9000"
     - "9001"
@@ -41,7 +41,7 @@ services:
       - data1-2:/data2
   minio2:
     image: quay.io/minio/minio:RELEASE.2022-01-27T03-53-02Z
-    command: server --console-address ":9001"  http://minio{1...2}/data{1...2} 
+    command: server --console-address ":9001"  http://minio{1...2}/data{1...2}
     expose:
       - "9000"
       - "9001"
@@ -83,7 +83,7 @@ services:
       - nginx
     networks:
       - quokka
-      
+
   execution-service:
     image: planqk/execution-service:latest
     build: ./services/execution-service
@@ -91,7 +91,7 @@ services:
       - '5075:5075'
     networks:
       - quokka
-      
+
   optimization-service:
     image: planqk/optimization-service:latest
     build: ./services/optimization-service
@@ -101,14 +101,14 @@ services:
       - quokka
     env_file:
      - ip.env
-      
+
   objective-evaluation-service:
     image: planqk/objective-evaluation-service:latest
     ports:
       - '5072:5072'
     networks:
       - quokka
-      
+
   circuit-generation-service:
     image: planqk/quantum-circuit-generator:latest
     ports:
@@ -125,6 +125,20 @@ services:
     image: planqk/warm-starting-service:latest
     ports:
       - '5077:5077'
+    networks:
+      - quokka
+
+  error-correction-service:
+    image: planqk/error-correction-service:latest
+    ports:
+      - '5078:5078'
+    networks:
+      - quokka
+
+  visualization-service:
+    image: planqk/visualization-service:latest
+    ports:
+      - '5079:5079'
     networks:
       - quokka
 

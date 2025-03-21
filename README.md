@@ -9,9 +9,12 @@ Thus, Quokka provides the following functionalities as services via a single End
 3. [Error mitigation](https://github.com/UST-QuAntiL/error-mitigation-service)
 4. [Result analysis and objective evaluation](https://github.com/UST-QuAntiL/objective-evaluation-service)
 5. [Optimization](./services/optimization-service)
-6. [Circuit Cutting Service](https://github.com/UST-QuAntiL/circuit-cutting-service)
-7. [Warm-Starting Service](https://github.com/UST-QuAntiL/warm-starting-service)
-8. [Visualization Service](https://github.com/UST-QuAntiL/visualization-service)
+6. [Circuit Cutting](https://github.com/UST-QuAntiL/circuit-cutting-service)
+7. [Warm-Starting ](https://github.com/UST-QuAntiL/warm-starting-service)
+8. [Error-Correction](https://github.com/UST-QuAntiL/warm-starting-service)
+9. [Visualization](https://github.com/UST-QuAntiL/visualization-service)
+
+An overview of the services' OpenAPI specifications can be found [here](./api-specifications)
 
 To integrate all these services and manage the control and data flow, Quokka is best used in combination with workflows.
 
